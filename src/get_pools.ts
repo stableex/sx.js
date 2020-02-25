@@ -1,5 +1,5 @@
 import { JsonRpc } from 'eosjs';
-import { kv, Pools } from "./interfaces";
+import { Pools } from "./interfaces";
 import { split, Symbol } from "eos-common";
 
 export async function get_pools( rpc: JsonRpc ): Promise<Pools> {

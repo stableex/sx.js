@@ -1,7 +1,5 @@
 import { Asset, Symbol, symbol_code } from "eos-common";
 
-export interface kv { [symcode: string ]: number };
-
 export interface Settings {
     paused: boolean;
     pool_fee: number;

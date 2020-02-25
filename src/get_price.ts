@@ -1,9 +1,7 @@
-import { rpc } from "../__tests__/config";
-import { Asset, Symbol, symbol_code, check, double_to_asset, asset_to_double } from "eos-common";
-import { Pools, Settings } from "./interfaces"
-import { get_pools } from "./get_pools";
+import { Asset, symbol_code, check, double_to_asset, asset_to_double } from "eos-common";
+import { Pools } from "./interfaces"
 
-function get_price( quantity: Asset, symcode: symbol_code, pools: Pools ) {
+export function get_price( quantity: Asset, symcode: symbol_code, pools: Pools ) {
     const base_symcode = quantity.symbol.code();
     const quote_symcode = symcode;
 
@@ -44,12 +42,3 @@ function get_price( quantity: Asset, symcode: symbol_code, pools: Pools ) {
 
     return double_to_asset( out_amount / quote_pegged, quote_sym );
 }
-
-(async () => {
-    const pools = await get_pools(rpc);
-    const quantity = new Asset(10000, new Symbol("EOS", 4));
-    const symcode = new symbol_code("USDT");
-    const price = get_price( quantity, symcode, pools );
-
-    console.log(quantity.to_string(), "=>", price.to_string());
-})();
