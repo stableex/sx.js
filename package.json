@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/stableex/sx.js#readme",
   "devDependencies": {
-    "eosjs": "^21.0.1-rc2"
+    "eosjs": "^21.0.1-rc2",
+    "node-fetch": "^2.6.0",
+    "ws": "^7.2.1"
+  },
+  "dependencies": {
+    "eos-common": "^0.4.0"
   }
 }

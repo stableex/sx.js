@@ -1,25 +1,29 @@
 import { JsonRpc } from 'eosjs';
 import { kv, Pools } from "./interfaces";
+import { split, Symbol } from "eos-common";
 
 export async function get_pools( rpc: JsonRpc ): Promise<Pools> {
-    const depth: kv = {};
-    const ratio: kv = {};
-    const balance: kv = {};
-    const pegged: kv = {};
-
+    const pools: Pools = {}
     const results = await rpc.get_table_rows({json: true, code: "stablestable", scope: "stablestable", table: "v1.pools"});
-    for (const row of results.rows) {
-        const symcode = row.id.sym.split(",")[1];
-        depth[ symcode ] = Number(row.depth.split(" ")[0]);
-        ratio[ symcode ] = row.ratio;
-        balance[ symcode ] = Number(row.balance.split(" ")[0]);
-        pegged[ symcode ] = Number(row.pegged.split(" ")[0]);
-    }
 
-    return {
-        depth,
-        ratio,
-        balance,
-        pegged
+    for (const row of results.rows) {
+        const [ precision, symcode ] = row.id.sym.split(",");
+        pools[symcode] = {
+            id: {
+                sym: new Symbol( symcode, precision ),
+                contract: row.id.contract
+            },
+            balance: split(row.balance),
+            depth: split(row.depth),
+            ratio: row.ratio,
+            proceeds: split(row.proceeds),
+            amplifier: row.amplifier,
+            type: row.type,
+            pegged: split(row.pegged),
+            connectors: row.connectors,
+            enabled: row.enabled,
+            metadata_json: row.metadata_json,
+        }
     }
+    return pools;
 }

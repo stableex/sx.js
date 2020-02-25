@@ -1,60 +1,55 @@
+import { rpc } from "../__tests__/config";
+import { Asset, Symbol, symbol_code, check, double_to_asset, asset_to_double } from "eos-common";
 import { Pools, Settings } from "./interfaces"
+import { get_pools } from "./get_pools";
 
-function get_price( quantity: string, symcode: string, pools: Pools, settings: Settings ) {
-    const auto settings = _settings.get();
-    const symbol_code base_symcode = quantity.symbol.code();
-    const symbol_code quote_symcode = symcode;
+function get_price( quantity: Asset, symcode: symbol_code, pools: Pools ) {
+    const base_symcode = quantity.symbol.code();
+    const quote_symcode = symcode;
+
+    // pools
+    const base = pools[ base_symcode.to_string() ];
+    const quote = pools[ quote_symcode.to_string() ];
+    const quote_sym = quote.id.sym
+
+    // validation
     check( base_symcode != quote_symcode, symcode.to_string() + " cannot convert symbol code to self");
-    check( quantity.symbol.raw() != 0, "[quantity] cannot be empty");
+    // check( quantity.symbol.raw() != 0, "[quantity] cannot be empty");
     check( symcode.raw() != 0, "[symcode] cannot be empty");
 
     // pegged
-    const double base_pegged = asset_to_double( set_pegged( base_symcode ) );
-    const double quote_pegged = asset_to_double( set_pegged( quote_symcode ) );
-
-    // update pool `balance` & `ratio`
-    update_pool_ratio( base_symcode );
-    update_pool_ratio( quote_symcode );
-
-    // pools
-    auto base = _pools.find( base_symcode.raw() );
-    auto quote = _pools.find( quote_symcode.raw() );
-    const symbol quote_sym = quote->id.get_symbol();
+    const base_pegged = asset_to_double( base.pegged );
+    const quote_pegged = asset_to_double( quote.pegged  );
 
     // depth
-    const double base_depth = asset_to_double( base->depth ) * base_pegged;
-    const double quote_depth = asset_to_double( quote->depth ) * quote_pegged;
-    const double min_depth = std::min( base_depth, quote_depth );
+    const base_depth = asset_to_double( base.depth ) * base_pegged;
+    const quote_depth = asset_to_double( quote.depth ) * quote_pegged;
+    const min_depth = Math.min( base_depth, quote_depth );
 
     // min amplifier
-    const int64_t min_amplifier = std::min( base->amplifier, quote->amplifier );
+    const min_amplifier = Math.min( base.amplifier, quote.amplifier );
 
     // ratio
-    const double base_ratio = static_cast<double>(base->balance.amount + quantity.amount) / base->depth.amount;
-    const double quote_ratio = static_cast<double>(quote->balance.amount) / quote->depth.amount;
+    const base_ratio = (base.balance.amount + quantity.amount) / base.depth.amount;
+    const quote_ratio = (quote.balance.amount) / quote.depth.amount;
 
     // upper
-    const double base_upper = ( min_amplifier * min_depth - min_depth + (min_depth * base_ratio));
-    const double quote_upper = ( min_amplifier * min_depth - min_depth + (min_depth * quote_ratio));
+    const base_upper = ( min_amplifier * min_depth - min_depth + (min_depth * base_ratio));
+    const quote_upper = ( min_amplifier * min_depth - min_depth + (min_depth * quote_ratio));
 
     // bancor
     // amount / (balance_from + amount) * balance_to
-    const double in_amount = asset_to_double( quantity ) * base_pegged;
-    const double out_amount = in_amount / ( base_upper + in_amount ) * quote_upper;
-
-    // print("\nbase_symcode: " + base_symcode.to_string() + "\n");
-    // print("quote_symcode: " + quote_symcode.to_string() + "\n");
-    // print("min_amplifier: " + to_string( min_amplifier ) + "\n");
-    // print("base_pegged: " + to_string( base_pegged ) + "\n");
-    // print("quote_pegged: " + to_string( quote_pegged ) + "\n");
-    // print("base_depth: " + to_string( base_depth ) + "\n");
-    // print("quote_depth: " + to_string( quote_depth ) + "\n");
-    // print("base_ratio: " + to_string( base_ratio ) + "\n");
-    // print("quote_ratio: " + to_string( quote_ratio ) + "\n");
-    // print("base_upper: " + to_string( base_upper ) + "\n");
-    // print("quote_upper: " + to_string( quote_upper ) + "\n");
-    // print("out_amount: " + to_string( out_amount ) + "\n");
-    // print("in_amount: " + to_string( in_amount ) + "\n");
+    const in_amount = asset_to_double( quantity ) * base_pegged;
+    const out_amount = in_amount / ( base_upper + in_amount ) * quote_upper;
 
     return double_to_asset( out_amount / quote_pegged, quote_sym );
 }
+
+(async () => {
+    const pools = await get_pools(rpc);
+    const quantity = new Asset(10000, new Symbol("EOS", 4));
+    const symcode = new symbol_code("USDT");
+    const price = get_price( quantity, symcode, pools );
+
+    console.log(quantity.to_string(), "=>", price.to_string());
+})();

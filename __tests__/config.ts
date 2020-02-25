@@ -4,5 +4,5 @@ const fetch = require('node-fetch');
 ;(global as any).WebSocket = require("ws");
 
 // Nodeos
-export const endpoint = process.env.NODEOS_ENDPOINT || "http://localhost:8888";
+export const endpoint = process.env.NODEOS_ENDPOINT || "https://eos.eosn.io";
 export const rpc = new JsonRpc(endpoint, { fetch });
