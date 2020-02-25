@@ -4,7 +4,7 @@ import { get_pools, get_price } from "..";
 
 (async () => {
     const pools = await get_pools(rpc);
-    const quantity = new Asset(10000, new Symbol("EOS", 4));
+    const quantity = new Asset(100000, new Symbol("EOS", 4));
     const symcode = new symbol_code("USDT");
     const price = get_price( quantity, symcode, pools );
 
