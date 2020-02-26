@@ -1,12 +1,23 @@
-import { Asset, symbol_code, Symbol } from "eos-common";
+import { Asset, symbol } from "eos-common";
 import { rpc } from "./config";
-import { get_pools, get_price } from "..";
+import { get_pools, get_price, get_fee, get_settings } from "..";
 
 (async () => {
+    // settings
     const pools = await get_pools(rpc);
-    const quantity = new Asset(100000, new Symbol("EOS", 4));
-    const symcode = new symbol_code("USDT");
-    const price = get_price( quantity, symcode, pools );
+    const settings = await get_settings(rpc);
 
-    console.log(quantity.to_string(), "=>", price.to_string());
+    // out quantity
+    const quantity = new Asset(10000, symbol("EOS", 4));
+    const fee = get_fee( quantity, settings );
+    const in_quantity = new Asset(quantity.amount - fee.amount, quantity.symbol);
+
+    // calculate
+    const out = get_price( in_quantity, "USDT", pools );
+
+    // logs
+    console.log("quantity:", quantity.to_string());
+    console.log("in_quantity:", in_quantity.to_string());
+    console.log("fee:", fee.to_string());
+    console.log("out:", out.to_string());
 })();
