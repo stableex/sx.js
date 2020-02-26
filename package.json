@@ -1,9 +1,14 @@
 {
   "name": "sx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SX - Javascript Library",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "start": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,12 +21,13 @@
     "url": "https://github.com/stableex/sx.js/issues"
   },
   "homepage": "https://github.com/stableex/sx.js#readme",
-  "devDependencies": {
-    "eosjs": "^21.0.1-rc2",
-    "node-fetch": "^2.6.0",
-    "ws": "^7.2.1"
-  },
   "dependencies": {
-    "eos-common": "^0.4.0"
+    "eosjs": "^21.0.1-rc2",
+    "eos-common": "0.4.0"
+  },
+  "devDependencies": {
+    "node-fetch": "^2.6.0",
+    "typescript": "^3.8.2",
+    "ws": "^7.2.1"
   }
 }
