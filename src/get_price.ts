@@ -1,4 +1,4 @@
-import { Asset, SymbolCode, check, double_to_asset, asset_to_double, symbol_code } from "eos-common";
+import { Asset, SymbolCode, check, bigint_to_asset, asset_to_number, symbol_code, number_to_asset } from "eos-common";
 import { Pools } from "./interfaces"
 
 export function get_price( quantity: Asset, symcode: SymbolCode | string, pools: Pools ) {
@@ -17,20 +17,20 @@ export function get_price( quantity: Asset, symcode: SymbolCode | string, pools:
     check( quote_symcode.raw() != BigInt(0), "[symcode] cannot be empty");
 
     // pegged
-    const base_pegged = asset_to_double( base.pegged );
-    const quote_pegged = asset_to_double( quote.pegged  );
+    const base_pegged = asset_to_number( base.pegged );
+    const quote_pegged = asset_to_number( quote.pegged  );
 
     // depth
-    const base_depth = asset_to_double( base.depth ) * base_pegged;
-    const quote_depth = asset_to_double( quote.depth ) * quote_pegged;
+    const base_depth = asset_to_number( base.depth ) * base_pegged;
+    const quote_depth = asset_to_number( quote.depth ) * quote_pegged;
     const min_depth = Math.min( base_depth, quote_depth );
 
     // min amplifier
     const min_amplifier = Math.min( base.amplifier, quote.amplifier );
 
     // ratio
-    const base_ratio = (base.balance.amount + quantity.amount) / base.depth.amount;
-    const quote_ratio = (quote.balance.amount) / quote.depth.amount;
+    const base_ratio = Number((base.balance.amount + quantity.amount) / base.depth.amount);
+    const quote_ratio = Number(quote.balance.amount / quote.depth.amount);
 
     // upper
     const base_upper = ( min_amplifier * min_depth - min_depth + (min_depth * base_ratio));
@@ -38,8 +38,8 @@ export function get_price( quantity: Asset, symcode: SymbolCode | string, pools:
 
     // bancor
     // amount / (balance_from + amount) * balance_to
-    const in_amount = asset_to_double( quantity ) * base_pegged;
+    const in_amount = asset_to_number( quantity ) * base_pegged;
     const out_amount = in_amount / ( base_upper + in_amount ) * quote_upper;
 
-    return double_to_asset( out_amount / quote_pegged, quote_sym );
+    return number_to_asset( out_amount / quote_pegged, quote_sym );
 }

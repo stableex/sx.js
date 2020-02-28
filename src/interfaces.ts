@@ -1,4 +1,4 @@
-import { Asset, Symbol, symbol_code } from "eos-common";
+import { Asset, Symbol, SymbolCode } from "eos-common";
 
 export interface kv { [symcode: string ]: number };
 
@@ -25,9 +25,9 @@ export interface Pool {
     ratio: number;
     proceeds: Asset;
     amplifier: number;
-    type: symbol_code;
+    type: SymbolCode;
     pegged: Asset;
-    connectors: symbol_code[];
+    connectors: SymbolCode[];
     enabled: boolean;
     metadata_json: Map<string, string> // TO-DO => Map<name, string>
 }

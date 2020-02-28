@@ -1,5 +1,5 @@
 {
-  "name": "sx",
+  "name": "sxjs",
   "version": "0.1.1",
   "description": "SX - Javascript Library",
   "main": "dist/index.js",
@@ -22,10 +22,10 @@
   },
   "homepage": "https://github.com/stableex/sx.js#readme",
   "dependencies": {
-    "eosjs": "^21.0.1-rc2",
-    "eos-common": "0.4.0"
+    "eos-common": "^0.4.8"
   },
   "devDependencies": {
+    "eosjs": "^21.0.1-rc2",
     "node-fetch": "^2.6.0",
     "typescript": "^3.8.2",
     "ws": "^7.2.1"
