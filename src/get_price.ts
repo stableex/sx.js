@@ -29,8 +29,8 @@ export function get_price( quantity: Asset, symcode: SymbolCode | string, pools:
     const min_amplifier = Math.min( base.amplifier, quote.amplifier );
 
     // ratio
-    const base_ratio = Number((base.balance.amount + quantity.amount) / base.depth.amount);
-    const quote_ratio = Number(quote.balance.amount / quote.depth.amount);
+    const base_ratio = Number(base.balance.amount + quantity.amount) / Number(base.depth.amount);
+    const quote_ratio = Number(quote.balance.amount) / Number(quote.depth.amount);
 
     // upper
     const base_upper = ( min_amplifier * min_depth - min_depth + (min_depth * base_ratio));
