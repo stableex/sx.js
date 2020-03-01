@@ -1,5 +1,7 @@
 import { Asset, Symbol, SymbolCode } from "eos-common";
 
+export const VERSION = 1.0;
+
 export interface kv { [symcode: string ]: number };
 
 export interface Settings {

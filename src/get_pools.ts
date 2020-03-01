@@ -1,6 +1,6 @@
 import { JsonRpc } from 'eosjs';
 import { Pools } from "./interfaces";
-import { Asset, Symbol } from "eos-common";
+import { asset, symbol, symbol_code } from "eos-common";
 
 export async function get_pools( rpc: JsonRpc ): Promise<Pools> {
     const pools: Pools = {}
@@ -10,17 +10,17 @@ export async function get_pools( rpc: JsonRpc ): Promise<Pools> {
         const [ precision, symcode ] = row.id.sym.split(",");
         pools[symcode] = {
             id: {
-                sym: new Symbol( symcode, precision ),
+                sym: symbol( symcode, precision ),
                 contract: row.id.contract
             },
-            balance: new Asset(row.balance),
-            depth: new Asset(row.depth),
+            balance: asset(row.balance),
+            depth: asset(row.depth),
             ratio: row.ratio,
-            proceeds: new Asset(row.proceeds),
+            proceeds: asset(row.proceeds),
             amplifier: row.amplifier,
-            type: row.type,
-            pegged: new Asset(row.pegged),
-            connectors: row.connectors,
+            type: symbol_code(row.type),
+            pegged: asset(row.pegged),
+            connectors: row.connectors.map(( symcode: string ) => symbol_code(symcode)),
             enabled: row.enabled,
             metadata_json: row.metadata_json,
         }

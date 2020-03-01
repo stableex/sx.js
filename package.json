@@ -1,15 +1,25 @@
 {
   "name": "sxjs",
   "version": "0.1.1",
-  "description": "SX - Javascript Library",
+  "description": "SX - Stable Asset Liquidity Exchange",
   "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "runkitExampleFilename": "dist/examples/basic.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "start": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c rollup.config.ts",
+    "prepublishOnly": "npm run test && npm run build",
+    "test": "jest --coverage",
+    "posttest": "eslint . --ext .ts"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
   },
   "repository": {
     "type": "git",
@@ -21,13 +31,28 @@
     "url": "https://github.com/stableex/sx.js/issues"
   },
   "homepage": "https://github.com/stableex/sx.js#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "*",
+    "@rollup/plugin-node-resolve": "*",
+    "@types/jest": "*",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "*",
+    "eosjs": "^21.0.1-rc2",
+    "eslint": "*",
+    "eslint-plugin-jest": "*",
+    "jest": "*",
+    "node-fetch": "*",
+    "rollup": "*",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-copy": "*",
+    "rollup-plugin-peer-deps-external": "*",
+    "rollup-plugin-progress": "*",
+    "rollup-plugin-terser": "*",
+    "rollup-plugin-typescript2": "*",
+    "ts-jest": "*",
+    "typescript": "*"
+  },
   "dependencies": {
     "eos-common": "^0.4.8"
-  },
-  "devDependencies": {
-    "eosjs": "^21.0.1-rc2",
-    "node-fetch": "^2.6.0",
-    "typescript": "^3.8.2",
-    "ws": "^7.2.1"
   }
 }
