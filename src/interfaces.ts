@@ -2,7 +2,7 @@ import { Asset, Symbol, SymbolCode } from "eos-common";
 
 export const VERSION = 1.0;
 
-export interface kv { [symcode: string ]: number };
+export interface kv { [symcode: string ]: number }
 
 export interface Settings {
     paused: boolean;
@@ -14,13 +14,13 @@ export interface Settings {
 }
 
 export interface Pools {
-    [ symcode: string ]: Pool
+    [ symcode: string ]: Pool;
 }
 
 export interface Pool {
     id: {
-        sym: Symbol, // TO-DO => extended asset
-        contract: string,
+        sym: Symbol; // TO-DO => extended asset
+        contract: string;
     };
     balance: Asset;
     depth: Asset;
@@ -31,5 +31,10 @@ export interface Pool {
     pegged: Asset;
     connectors: SymbolCode[];
     enabled: boolean;
-    metadata_json: Map<string, string> // TO-DO => Map<name, string>
+    metadata_json: Map<string, string>; // TO-DO => Map<name, string>
+}
+
+export interface Volume {
+    volume: kv;
+    proceeds: kv;
 }

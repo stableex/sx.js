@@ -14,8 +14,8 @@
   "scripts": {
     "build": "rollup -c rollup.config.ts",
     "prepublishOnly": "npm run test && npm run build",
-    "test": "jest --coverage",
-    "posttest": "eslint . --ext .ts"
+    "test": "jest --coverage __tests__/**.test.ts",
+    "posttest": "eslint src --ext .ts"
   },
   "engines": {
     "node": ">=8",
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/stableex/sx.js#readme",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.8.3",
     "@rollup/plugin-commonjs": "*",
     "@rollup/plugin-node-resolve": "*",
     "@types/jest": "*",

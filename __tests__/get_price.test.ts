@@ -3,6 +3,6 @@ import { pools } from "./pools";
 
 test("get_price", () => {
     const price = get_price( "1.0000 EOS", "USDT", pools );
-    console.log(price)
-    expect(price.amount).toBeGreaterThan(0);
+
+    expect(price.amount).toBe(34740n);
 });
