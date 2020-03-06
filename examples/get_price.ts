@@ -5,17 +5,17 @@ import { get_inverse_price } from "../src/get_price";
 
 (async () => {
     // settings
-    const pools = await get_pools( rpc, { code: "sx" });
-    const settings = await get_settings( rpc, { code: "sx" });
+    const pools = await get_pools( rpc, { code: "stablestable" });
+    const settings = await get_settings( rpc, { code: "stablestable" });
 
     // out quantity
-    const quantity = asset("200.0000 USDB");
+    const quantity = asset("200.0000 USDT");
     const fee = get_fee( quantity, settings );
     const in_quantity = asset(quantity.amount - fee.amount, quantity.symbol);
 
     // calculate
-    const out = get_price( in_quantity, "USDA", pools );
-    const inverse = get_inverse_price( out, "USDB", pools );
+    const out = get_price( in_quantity, "EOSDT", pools );
+    const inverse = get_inverse_price( out, "USDT", pools );
     inverse.amount += fee.amount;
 
     // logs
