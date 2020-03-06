@@ -9,13 +9,13 @@ import { get_inverse_price } from "../src/get_price";
     const settings = await get_settings( rpc, { code: "stablestable" });
 
     // out quantity
-    const quantity = asset("200.0000 USDT");
+    const quantity = asset("200.000000000 EOSDT");
     const fee = get_fee( quantity, settings );
     const in_quantity = asset(quantity.amount - fee.amount, quantity.symbol);
 
     // calculate
-    const out = get_price( in_quantity, "EOSDT", pools );
-    const inverse = get_inverse_price( out, "USDT", pools );
+    const out = get_price( in_quantity, "USDT", pools );
+    const inverse = get_inverse_price( out, "EOSDT", pools );
     inverse.amount += fee.amount;
 
     // logs

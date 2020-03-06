@@ -43,12 +43,12 @@ function get_uppers( base_symcode: SymbolCode, quote_symcode: SymbolCode, pools:
     const min_amplifier = Math.min( base.amplifier, quote.amplifier );
 
     // ratio
-    const base_ratio = Number(base.balance.amount) / Number(base.depth.amount);
-    const quote_ratio = Number(quote.balance.amount) / Number(quote.depth.amount);
+    const base_ratio = Number( base.balance.amount ) / Number( base.depth.amount );
+    const quote_ratio = Number( quote.balance.amount ) / Number( quote.depth.amount );
 
     // upper
-    const base_upper = ( min_amplifier * min_depth - min_depth + (min_depth * base_ratio));
-    const quote_upper = ( min_amplifier * min_depth - min_depth + (min_depth * quote_ratio));
+    const base_upper = ( min_amplifier * min_depth - min_depth + ( min_depth * base_ratio ));
+    const quote_upper = ( min_amplifier * min_depth - min_depth + ( min_depth * quote_ratio ));
 
     return [ base_upper, quote_upper ]
 }
