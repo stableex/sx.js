@@ -1,4 +1,4 @@
-import { asset } from "eos-common";
+import { Asset } from "eos-common";
 import { JsonRpc } from 'eosjs';
 import { Settings } from "./interfaces";
 
@@ -18,8 +18,8 @@ export async function get_settings( rpc: JsonRpc, options: {
         paused: Boolean(results.rows[0].paused),
         pool_fee: results.rows[0].pool_fee,
         stability_fee: results.rows[0].stability_fee,
-        min_convert: asset(results.rows[0].min_convert),
-        min_staked: asset(results.rows[0].min_staked)
+        min_convert: new Asset(results.rows[0].min_convert),
+        min_staked: new Asset(results.rows[0].min_staked)
     }
 }
 

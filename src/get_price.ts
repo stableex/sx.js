@@ -1,4 +1,4 @@
-import { Asset, SymbolCode, check, asset_to_number, symbol_code, number_to_asset, asset } from "eos-common";
+import { Asset, SymbolCode, check, asset_to_number, number_to_asset } from "eos-common";
 import { get_bancor_output, get_bancor_input } from "./bancor";
 import { Pools } from "./interfaces"
 
@@ -55,8 +55,8 @@ function get_uppers( base_symcode: SymbolCode, quote_symcode: SymbolCode, pools:
 
 export function get_price( quantity: Asset | string, symcode: SymbolCode | string, pools: Pools ): Asset {
     // parse string
-    const _symcode = typeof symcode == "string" ? symbol_code(symcode) : symcode;
-    const _quantity = typeof quantity == "string" ? asset(quantity) : quantity;
+    const _symcode = typeof symcode == "string" ? new SymbolCode(symcode) : symcode;
+    const _quantity = typeof quantity == "string" ? new Asset(quantity) : quantity;
     check_quantity( _quantity );
 
     // symcodes
@@ -78,8 +78,8 @@ export function get_price( quantity: Asset | string, symcode: SymbolCode | strin
 
 export function get_inverse_price( out: Asset | string, symcode: SymbolCode | string, pools: Pools ): Asset {
     // parse string
-    const _symcode = typeof symcode == "string" ? symbol_code(symcode) : symcode;
-    const _out = typeof out == "string" ? asset(out) : out;
+    const _symcode = typeof symcode == "string" ? new SymbolCode(symcode) : symcode;
+    const _out = typeof out == "string" ? new Asset(out) : out;
     check_quantity( _out );
 
     // symcodes

@@ -1,27 +1,19 @@
-import { asset } from "eos-common";
+import { Asset } from "eos-common";
 import { rpc } from "./config";
-import { get_pools, get_price, get_fee, get_settings } from "..";
-import { get_inverse_price } from "../src/get_price";
+import { get_pools, get_settings, get_price, get_fee } from "..";
 
 (async () => {
     // settings
-    const pools = await get_pools( rpc, { code: "stablestable" });
-    const settings = await get_settings( rpc, { code: "stablestable" });
+    const pools = await get_pools( rpc );
+    const settings = await get_settings( rpc );
 
-    // out quantity
-    const quantity = asset("200.000000000 EOSDT");
+    // calculate price
+    const quantity = new Asset("200.0000 USDT");
     const fee = get_fee( quantity, settings );
-    const in_quantity = asset(quantity.amount - fee.amount, quantity.symbol);
-
-    // calculate
-    const out = get_price( in_quantity, "USDT", pools );
-    const inverse = get_inverse_price( out, "EOSDT", pools );
-    inverse.amount += fee.amount;
+    const price = get_price( Asset.minus( quantity, fee ), "EOSDT", pools );
 
     // logs
     console.log("quantity:", quantity.to_string());
-    console.log("in_quantity:", in_quantity.to_string());
     console.log("fee:", fee.to_string());
-    console.log("out:", out.to_string());
-    console.log("inverse:", inverse.to_string());
+    console.log("price:", price.to_string());
 })();
