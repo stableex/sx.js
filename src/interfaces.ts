@@ -7,7 +7,6 @@ export interface kv { [symcode: string ]: number }
 export interface Settings {
     paused: boolean;
     pool_fee: number;
-    transaction_fee: Asset;
     stability_fee: number;
     min_convert: Asset;
     min_staked: Asset;

@@ -2,9 +2,18 @@ import { JsonRpc } from 'eosjs';
 import { Pools } from "./interfaces";
 import { asset, symbol, symbol_code } from "eos-common";
 
-export async function get_pools( rpc: JsonRpc ): Promise<Pools> {
+export async function get_pools( rpc: JsonRpc, options: {
+    code?: string;
+    table?: string;
+} = {} ): Promise<Pools> {
     const pools: Pools = {}
-    const results = await rpc.get_table_rows({json: true, code: "stablestable", scope: "stablestable", table: "v1.pools"});
+
+    // optional params
+    const code = options.code ? options.code : "stablestable";
+    const scope = code;
+    const table = options.table ? options.table : "v1.pools";
+
+    const results = await rpc.get_table_rows({ json: true, code, scope, table });
 
     for (const row of results.rows) {
         const [ precision, symcode ] = row.id.sym.split(",");

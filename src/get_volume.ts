@@ -19,15 +19,26 @@ function parse_volume( row: any): Volume {
     }
 }
 
-export async function get_weekly_volume( rpc: JsonRpc, days = 7 ): Promise<Volume[]> {
-    const weekly: Array<{
+export async function get_volume( rpc: JsonRpc, options: {
+    code?: string;
+    table?: string;
+    days?: number;
+} = {} ): Promise<Volume[]> {
+
+    // optional params
+    const code = options.code ? options.code : "stablestable";
+    const scope = code;
+    const table = options.table ? options.table : "v1.volume";
+    const days = options.days ? options.days : 1;
+
+    const volume: Array<{
         volume: kv;
         proceeds: kv;
     }> = [];
 
-    const results = await rpc.get_table_rows({json: true, code: "stablestable", scope: "stablestable", table: "v1.volume", reverse: true, limit: days});
+    const results = await rpc.get_table_rows({json: true, code, scope, table, reverse: true, limit: days});
     for (const row of results.rows) {
-        weekly.push( parse_volume( row ));
+        volume.push( parse_volume( row ));
     }
-    return weekly;
+    return volume;
 }
