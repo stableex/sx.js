@@ -29,9 +29,9 @@ import { get_pools, get_settings, get_rate } from "sxjs";
 
 (async () => {
     // nodeos
-    const rpc = new JsonRpc("https://eos.eosn.io", { fetch: require('node-fetch') });
+    const rpc = new JsonRpc("https://mainnet.eosn.io", { fetch: require('node-fetch') });
 
-    // settings
+    // settings (HTTP request)
     const pools = await get_pools( rpc );
     const settings = await get_settings( rpc );
 
