@@ -1,4 +1,4 @@
-import { Asset, Symbol, SymbolCode } from "eos-common";
+import { Asset, Sym, SymbolCode } from "eos-common";
 
 export const VERSION = 1.0;
 
@@ -18,7 +18,7 @@ export interface Pools {
 
 export interface Pool {
     id: {
-        sym: Symbol; // TO-DO => extended asset
+        sym: Sym; // TO-DO => extended asset
         contract: string;
     };
     balance: Asset;
