@@ -1,21 +1,18 @@
 {
   "name": "sxjs",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "SX - Stable Asset Liquidity Exchange",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "browser": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
   "types": "dist/index.d.ts",
-  "runkitExampleFilename": "dist/examples/basic.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.ts",
+    "build": "tsc",
     "prepublishOnly": "npm run test && npm run build",
     "test": "jest --coverage __tests__/**.test.ts",
-    "posttest": "eslint src --ext .ts"
+    "posttest": "eslint . --ext .ts",
+    "docs": "tsc --target ES2019 && documentation readme dist/eosiolib/**.js -s API"
   },
   "engines": {
     "node": ">=8",
@@ -32,27 +29,18 @@
   },
   "homepage": "https://github.com/stableex/sx.js#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "*",
-    "@rollup/plugin-node-resolve": "*",
     "@types/jest": "*",
-    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "*",
     "eosjs": "^21.0.1-rc2",
     "eslint": "*",
     "eslint-plugin-jest": "*",
     "jest": "*",
-    "node-fetch": "*",
-    "rollup": "*",
-    "rollup-plugin-cleaner": "*",
-    "rollup-plugin-copy": "*",
-    "rollup-plugin-peer-deps-external": "*",
-    "rollup-plugin-progress": "*",
-    "rollup-plugin-terser": "*",
-    "rollup-plugin-typescript2": "*",
+    "node-fetch": "^2.6.0",
     "ts-jest": "*",
     "typescript": "*"
   },
   "dependencies": {
-    "eos-common": "^0.6.0"
+    "eos-common": "^0.7.0"
   }
 }

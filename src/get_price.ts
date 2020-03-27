@@ -1,9 +1,10 @@
-import { Asset, SymbolCode, check, asset_to_number, number_to_asset } from "eos-common";
+import { Asset, SymbolCode, check } from "eos-common";
+import { asset_to_number, number_to_asset } from "./utils"
 import { get_bancor_output, get_bancor_input } from "./bancor";
 import { Pools } from "./interfaces"
 
 function check_quantity( quantity: Asset ): void {
-    check( quantity.amount > 0, "[quantity] amount must be positive");
+    check( quantity.amount.greater(0), "[quantity] amount must be positive");
     check( quantity.is_valid(), "[quantity] invalid symcode");
 }
 
@@ -24,7 +25,7 @@ function get_uppers( base_symcode: SymbolCode, quote_symcode: SymbolCode, pools:
     const base = pools[ base_symcode.to_string() ];
     const quote = pools[ quote_symcode.to_string() ];
 
-    check( quote_symcode.raw() != BigInt(0), "[symcode] cannot be empty");
+    check( quote_symcode.raw().notEquals(0), "[symcode] cannot be empty");
     check( quote_symcode.is_valid(), "[symcode] is not valid");
     check( base_symcode.to_string() != quote_symcode.to_string(), quote_symcode.to_string() + " cannot convert symbol code to self");
     check( !!base, base_symcode.to_string() + " base pool does not exists");
