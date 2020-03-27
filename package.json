@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run test && npm run build",
     "test": "jest --coverage __tests__/**.test.ts",
     "posttest": "eslint . --ext .ts",
-    "docs": "tsc --target ES2019 && documentation readme dist/eosiolib/**.js -s API"
+    "docs": "tsc --target ES2019 && documentation readme dist/src/**.js -s API"
   },
   "engines": {
     "node": ">=8",
