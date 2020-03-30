@@ -1,5 +1,4 @@
-import { Asset, SymbolCode, check } from "eos-common";
-import { asset_to_number, number_to_asset } from "./utils"
+import { Asset, SymbolCode, check, asset_to_number, number_to_asset } from "eos-common";
 import { get_bancor_output, get_bancor_input } from "./bancor";
 import { Pools } from "./interfaces"
 
