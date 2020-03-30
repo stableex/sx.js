@@ -3,5 +3,5 @@ import { get_pools } from "..";
 
 (async () => {
     const pools = await get_pools(rpc);
-    console.log(pools["EOS"]);
+    console.log(pools["USDT"]);
 })();
