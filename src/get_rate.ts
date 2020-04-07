@@ -1,23 +1,38 @@
-import { Asset, SymbolCode } from "eos-common";
+import { Asset, SymbolCode, check, asset_to_number } from "eos-common";
 import { Pools, Settings } from "./interfaces"
 import { get_fee, get_inverse_fee } from "./get_fee";
 import { get_price, get_inverse_price } from "./get_price";
 
-export function get_rate( quantity: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): { price: Asset; fee: Asset } {
-    // parse string
-    const _quantity = typeof quantity == "string" ? new Asset(quantity) : quantity;
+export function check_min_convert( quantity: Asset, pools: Pools, settings: Settings ): void
+{
+    const { min_convert } = settings;
+    const symcode = quantity.symbol.code().to_string();
+    const pool = pools[ symcode ];
 
-    const fee = get_fee( _quantity, settings );
-    const price = get_price( Asset.minus( _quantity, fee ), symcode, pools );
+    check( !!pool, "[quantity] pool does not exists");
 
-    return { price, fee };
+    const pegged = pool.type.isEqual(new SymbolCode("USD")) ? 1.00 : asset_to_number( pool.pegged );
+
+    check( asset_to_number( quantity ) * pegged >= asset_to_number( min_convert ), "[quantity] must exceed minimum convert amount of " + min_convert.to_string());
 }
 
-export function get_inverse_rate( out: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): { price: Asset; fee: Asset } {
 
+export function get_rate( quantity: Asset, symcode: SymbolCode, pools: Pools, settings: Settings ): { rate: Asset; fee: Asset }
+{
+    check_min_convert( quantity, pools, settings );
+
+    const fee = get_fee( quantity, settings );
+    const rate = get_price( Asset.minus( quantity, fee ), symcode, pools );
+
+    return { rate, fee };
+}
+
+export function get_inverse_rate( out: Asset, symcode: SymbolCode, pools: Pools, settings: Settings ): { rate: Asset; fee: Asset }
+{
     const inverse = get_inverse_price( out, symcode, pools );
     const fee = get_inverse_fee( inverse, settings );
-    const price = Asset.plus( inverse, fee );
+    const rate = Asset.plus( inverse, fee );
 
-    return { price, fee };
+    check_min_convert( rate, pools, settings );
+    return { rate, fee };
 }

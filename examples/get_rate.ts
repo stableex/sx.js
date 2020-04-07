@@ -1,4 +1,5 @@
 import { rpc } from "./config";
+import { asset, symbol_code } from "eos-common";
 import { get_pools, get_settings, get_rate } from "..";
 
 (async () => {
@@ -7,14 +8,13 @@ import { get_pools, get_settings, get_rate } from "..";
     const settings = await get_settings( rpc );
 
     // calculate price
-    const quantity = "200.0000 USDT";
-    const symcode = "EOSDT";
-    const { price, fee } = get_rate( quantity, symcode, pools, settings );
+    const quantity = asset("189.6729 USDE");
+    const symcode = symbol_code("USDT");
+    const { rate, fee } = get_rate( quantity, symcode, pools, settings );
 
     // logs
     console.log("quantity:", quantity );
     console.log("symcode:", symcode );
     console.log("fee:", fee.to_string());
-    console.log("price:", price.to_string());
+    console.log("rate:", rate.to_string());
 })();
-

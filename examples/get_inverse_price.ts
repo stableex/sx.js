@@ -1,4 +1,5 @@
 import { Asset } from "eos-common";
+import { asset, symbol_code } from "eos-common";
 import { rpc } from "./config";
 import { get_pools, get_settings, get_inverse_price, get_inverse_fee } from "..";
 
@@ -8,8 +9,8 @@ import { get_pools, get_settings, get_inverse_price, get_inverse_fee } from ".."
     const settings = await get_settings( rpc );
 
     // calculate inverse price
-    const out = "199.994144662 EOSDT";
-    const symcode = "USDT";
+    const out = asset("199.994144662 EOSDT");
+    const symcode = symbol_code("USDT");
     const price = get_inverse_price( out, symcode, pools );
     const fee = get_inverse_fee( price, settings );
     const total = Asset.plus( price, fee );

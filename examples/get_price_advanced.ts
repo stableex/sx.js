@@ -1,4 +1,4 @@
-import { Asset, symbol_code, symbol } from "eos-common";
+import { asset, symbol_code, symbol } from "eos-common";
 import { rpc } from "./config";
 import { get_pools, get_price } from "..";
 
@@ -7,9 +7,9 @@ import { get_pools, get_price } from "..";
     const USDT = symbol_code("USDT");
     const EOS = symbol_code("EOSDT")
 
-    const quantity1 = new Asset(10000, symbol("EOSDT", 4))
-    const quantity2 = new Asset(100000, symbol("EOSDT", 4))
-    const quantity3 = new Asset(1000000, symbol("EOSDT", 4))
+    const quantity1 = asset(10000, symbol("EOSDT", 4))
+    const quantity2 = asset(100000, symbol("EOSDT", 4))
+    const quantity3 = asset(1000000, symbol("EOSDT", 4))
 
     for ( const amplifier of [1, 3, 5, 10, 20, 50] ) {
         pools["EOSDT"].amplifier = amplifier;

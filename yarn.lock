@@ -1209,10 +1209,10 @@ end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
-eos-common@0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/eos-common/-/eos-common-0.7.3.tgz#01250fe1dafca13edac1a74e547cf23a09b837b9"
-  integrity sha512-/1MSR4H67A/1zVugeQMSIGQ50GWv92TGOc5gFI5AXRZ+RQFBRg2AhHElBNPNuNSZrzPQfiDJiRCvrbMITDvWUQ==
+eos-common@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/eos-common/-/eos-common-0.7.4.tgz#51a9a95a6ab2e260e75552ad33bd40c9d8ee2993"
+  integrity sha512-b5tE1WP3qgRMRdrEzgjEgLATrtWJX//biIjO+1eBnOPZLU4//EaH/x7MuKAbMJUEoyVtORZb6WLlQbevYuPOyg==
   dependencies:
     big-integer "^1.6.48"
 
