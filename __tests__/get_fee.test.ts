@@ -9,7 +9,7 @@ const settings = {
     min_staked: asset("10.0000 USD")
 }
 test("get_fee", () => {
-    const fee = get_fee( "1.0000 USDT", settings );
+    const fee = get_fee( asset("1.0000 USDT"), settings );
 
     expect( Number(fee.amount) ).toBe( 4 );
 });
