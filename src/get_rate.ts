@@ -3,7 +3,27 @@ import { Pools, Settings } from "./interfaces"
 import { get_fee, get_inverse_fee } from "./get_fee";
 import { get_price, get_inverse_price } from "./get_price";
 
-export function check_min_convert( quantity: Asset | string, pools: Pools, settings: Settings ): void
+function check_max_pool_ratio( quantity: Asset | string, pools: Pools ): void
+{
+    // validate input
+    const pool = pools[ asset(quantity).symbol.code().to_string() ]
+    check( !!pool, "[symcode] pool does not exist");
+    const remaining = Asset.plus( pool.balance, asset(quantity) );
+
+    check( Number(remaining.amount) / Number(pool.depth.amount) <= 5, asset(quantity).symbol.code().to_string() + " pool ratio must be lower than 500%" );
+}
+
+function check_min_pool_ratio( out: Asset | string, pools: Pools ): void
+{
+    // validate input
+    const pool = pools[ asset(out).symbol.code().to_string() ]
+    check( !!pool, "[symcode] pool does not exist");
+    const remaining = Asset.minus( pool.balance, asset(out) );
+
+    check( Number(remaining.amount) / Number(pool.depth.amount) >= 0.2, asset(out).symbol.code().to_string() + " pool ratio must be above 20%" );
+}
+
+function check_min_convert( quantity: Asset | string, pools: Pools, settings: Settings ): void
 {
     const { min_convert } = settings;
     const symcode = asset(quantity).symbol.code().to_string();
@@ -17,22 +37,29 @@ export function check_min_convert( quantity: Asset | string, pools: Pools, setti
 }
 
 
-export function get_rate( quantity: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): { rate: Asset; fee: Asset }
+export function get_rate( quantity: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): { out: Asset; fee: Asset }
 {
     check_min_convert( quantity, pools, settings );
+    check_max_pool_ratio( quantity, pools );
 
     const fee = get_fee( quantity, settings );
-    const rate = get_price( Asset.minus( asset(quantity), fee ), symcode, pools );
+    const out = get_price( Asset.minus( asset(quantity), fee ), symcode, pools );
 
-    return { rate, fee };
+    check_min_pool_ratio( out, pools );
+
+    return { out, fee };
 }
 
-export function get_inverse_rate( out: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): { rate: Asset; fee: Asset }
+export function get_inverse_rate( out: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): { quantity: Asset; fee: Asset }
 {
+    check_min_pool_ratio( out, pools );
+
     const inverse = get_inverse_price( out, symcode, pools );
     const fee = get_inverse_fee( inverse, settings );
-    const rate = Asset.plus( inverse, fee );
+    const quantity = Asset.plus( inverse, fee );
 
-    check_min_convert( rate, pools, settings );
-    return { rate, fee };
+    check_min_convert( quantity, pools, settings );
+    check_max_pool_ratio( quantity, pools );
+
+    return { quantity, fee };
 }
