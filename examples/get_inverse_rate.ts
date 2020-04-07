@@ -7,7 +7,7 @@ import { get_pools, get_settings, get_inverse_rate } from "..";
     const settings = await get_settings( rpc );
 
     // calculate price
-    const out = "100.00000000 EOSDT";
+    const out = "100.0000 USDE";
     const symcode = "USDT";
     const { quantity, fee } = get_inverse_rate( out, symcode, pools, settings );
 
