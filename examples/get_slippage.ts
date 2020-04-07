@@ -1,5 +1,5 @@
 import { rpc } from "./config";
-import { get_pools, get_settings, get_rate } from "..";
+import { get_pools, get_settings, get_slippage } from "..";
 
 (async () => {
     // settings
@@ -9,12 +9,10 @@ import { get_pools, get_settings, get_rate } from "..";
     // calculate price
     const quantity = "100.0000 USDE";
     const symcode = "USDT";
-    const { out, fee, slippage } = get_rate( quantity, symcode, pools, settings );
+    const slippage = get_slippage( quantity, symcode, pools, settings );
 
     // logs
     console.log("quantity:", quantity );
     console.log("symcode:", symcode );
-    console.log("fee:", fee.to_string());
-    console.log("out:", out.to_string());
-    console.log("slippage:", slippage);
-})();
+    console.log("slippage:", slippage );
+})().catch(e => console.error(e));

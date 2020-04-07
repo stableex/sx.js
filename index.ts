@@ -4,5 +4,6 @@ export * from "./src/get_price";
 export * from "./src/get_rate";
 export * from "./src/get_settings";
 export * from "./src/get_volume";
+export * from "./src/get_slippage";
 export * from "./src/bancor";
 export * from "./src/interfaces";
