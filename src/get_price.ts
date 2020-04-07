@@ -1,10 +1,10 @@
-import { Asset, SymbolCode, check, asset_to_number, number_to_asset } from "eos-common";
+import { asset, Asset, SymbolCode, check, asset_to_number, number_to_asset, symbol_code } from "eos-common";
 import { get_bancor_output, get_bancor_input } from "./bancor";
 import { Pools } from "./interfaces"
 
-function check_quantity( quantity: Asset ): void {
-    check( quantity.amount.greater(0), "[quantity] amount must be positive");
-    check( quantity.is_valid(), "[quantity] invalid symcode");
+function check_quantity( quantity: Asset | string ): void {
+    check( asset(quantity).amount.greater(0), "[quantity] amount must be positive");
+    check( asset(quantity).is_valid(), "[quantity] invalid symcode");
 }
 
 function get_pegged( base_symcode: SymbolCode, quote_symcode: SymbolCode, pools: Pools ): [number, number] {
@@ -53,12 +53,12 @@ function get_uppers( base_symcode: SymbolCode, quote_symcode: SymbolCode, pools:
     return [ base_upper, quote_upper ]
 }
 
-export function get_price( quantity: Asset, symcode: SymbolCode, pools: Pools ): Asset {
+export function get_price( quantity: Asset | string, symcode: SymbolCode | string, pools: Pools ): Asset {
     check_quantity( quantity );
 
     // symcodes
-    const base_symcode = quantity.symbol.code();
-    const quote_symcode = symcode;
+    const base_symcode = asset(quantity).symbol.code();
+    const quote_symcode = symbol_code(symcode);
 
     // uppers & pegged
     const quote_sym = pools[ quote_symcode.to_string() ].balance.symbol;
@@ -67,18 +67,18 @@ export function get_price( quantity: Asset, symcode: SymbolCode, pools: Pools ):
 
     // bancor
     // amount / (balance_from + amount) * balance_to
-    const in_amount = asset_to_number( quantity ) * base_pegged;
+    const in_amount = asset_to_number( asset(quantity) ) * base_pegged;
     const out_amount = get_bancor_output( base_upper, quote_upper, in_amount );
 
     return number_to_asset( out_amount / quote_pegged, quote_sym );
 }
 
-export function get_inverse_price( out: Asset, symcode: SymbolCode, pools: Pools ): Asset {
+export function get_inverse_price( out: Asset | string, symcode: SymbolCode | string, pools: Pools ): Asset {
     check_quantity( out );
 
     // symcodes
-    const base_symcode = out.symbol.code();
-    const quote_symcode = symcode;
+    const base_symcode = asset(out).symbol.code();
+    const quote_symcode = symbol_code(symcode);
 
     // uppers & pegged
     const quote_sym = pools[ quote_symcode.to_string() ].balance.symbol;
@@ -87,7 +87,7 @@ export function get_inverse_price( out: Asset, symcode: SymbolCode, pools: Pools
 
     // bancor
     // amount / (balance_from + amount) * balance_to
-    const out_amount = asset_to_number( out ) * base_pegged;
+    const out_amount = asset_to_number( asset(out) ) * base_pegged;
     const in_amount = get_bancor_input( base_upper, quote_upper, out_amount );
 
     return number_to_asset( in_amount / quote_pegged, quote_sym );

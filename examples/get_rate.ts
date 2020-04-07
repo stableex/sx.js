@@ -8,8 +8,8 @@ import { get_pools, get_settings, get_rate } from "..";
     const settings = await get_settings( rpc );
 
     // calculate price
-    const quantity = asset("189.6729 USDE");
-    const symcode = symbol_code("USDT");
+    const quantity = "189.6729 USDE";
+    const symcode = "USDT";
     const { rate, fee } = get_rate( quantity, symcode, pools, settings );
 
     // logs
