@@ -7,8 +7,8 @@ import { get_pools, get_settings, get_rate } from "..";
     const settings = await get_settings( rpc );
 
     // calculate price
-    const quantity = "100.0000 USDE";
-    const symcode = "USDT";
+    const quantity = "1.0000 USDT";
+    const symcode = "EOSDT";
     const { out, fee, slippage } = get_rate( quantity, symcode, pools, settings );
 
     // logs
