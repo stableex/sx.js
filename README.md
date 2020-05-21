@@ -43,9 +43,9 @@ import { get_pools, get_settings, get_rate } from "sxjs";
     // calculate price
     const quantity = "200.0000 USDT";
     const symcode = "EOSDT";
-    const { price, fee } = get_rate( quantity, symcode, pools, settings );
+    const { out, fee } = get_rate( quantity, symcode, pools, settings );
 
-    // price => Asset("199.994144662 EOSDT")
+    // out => Asset("199.994144662 EOSDT")
     // fee => Asset("0.0800 USDT")
 })();
 ```
