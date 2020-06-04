@@ -5,12 +5,12 @@ import { get_pools, get_settings, get_price, get_fee } from "..";
 
 (async () => {
     // settings
-    const pools = await get_pools( rpc );
-    const settings = await get_settings( rpc );
+    const pools = await get_pools( rpc, { code: "stablestable"} );
+    const settings = await get_settings( rpc, { code: "stablestable"} );
 
     // calculate price
     const quantity = asset("100.0000 USDT");
-    const symcode = symbol_code("EOSDT");
+    const symcode = symbol_code("USDB");
     const fee = get_fee( quantity, settings );
     const price = get_price( Asset.minus( quantity, fee ), symcode, pools, settings.amplifier );
 

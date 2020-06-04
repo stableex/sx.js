@@ -27,7 +27,7 @@ export async function get_volume( rpc: JsonRpc, options: {
 } = {} ): Promise<Volume[]> {
 
     // optional params
-    const code = options.code ? options.code : "stable.sx";
+    const code = options.code ? options.code : "stablestable";
     const scope = code;
     const table = options.table ? options.table : "volume";
     const days = options.days ? options.days : 1;

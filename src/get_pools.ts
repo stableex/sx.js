@@ -9,11 +9,11 @@ export async function get_pools( rpc: JsonRpc, options: {
     const pools: Pools = {}
 
     // optional params
-    const code = options.code ? options.code : "stable.sx";
+    const code = options.code ? options.code : "stablestable";
     const scope = code;
     const table = options.table ? options.table : "tokens";
 
-    const results = await rpc.get_table_rows({ json: true, code, scope, table });
+    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 50 });
 
     for (const row of results.rows) {
         const [ precision, symcode ] = row.sym.split(",");
