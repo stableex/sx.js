@@ -1,15 +1,12 @@
-import { Asset, Sym, SymbolCode } from "eos-common";
+import { Asset, Sym, Name } from "eos-common";
 
-export const VERSION = 1.0;
+export const VERSION = 2.0;
 
 export interface kv { [symcode: string ]: number }
 
 export interface Settings {
-    paused: boolean;
-    pool_fee: number;
-    stability_fee: number;
-    min_convert: Asset;
-    min_staked: Asset;
+    fee: number;
+    amplifier: number;
 }
 
 export interface Pools {
@@ -17,23 +14,14 @@ export interface Pools {
 }
 
 export interface Pool {
-    id: {
-        sym: Sym; // TO-DO => extended asset
-        contract: string;
-    };
+    sym: Sym;
+    contract: Name;
     balance: Asset;
     depth: Asset;
-    ratio: number;
-    proceeds: Asset;
-    amplifier: number;
-    type: SymbolCode;
-    pegged: Asset;
-    connectors: SymbolCode[];
-    enabled: boolean;
-    metadata_json: Map<string, string>; // TO-DO => Map<name, string>
 }
 
 export interface Volume {
+    timestamp: string;
     volume: kv;
-    proceeds: kv;
+    fees: kv;
 }

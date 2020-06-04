@@ -9,10 +9,10 @@ import { get_pools, get_settings, get_price, get_fee } from "..";
     const settings = await get_settings( rpc );
 
     // calculate price
-    const quantity = asset("200.0000 USDT");
+    const quantity = asset("100.0000 USDT");
     const symcode = symbol_code("EOSDT");
     const fee = get_fee( quantity, settings );
-    const price = get_price( Asset.minus( quantity, fee ), symcode, pools );
+    const price = get_price( Asset.minus( quantity, fee ), symcode, pools, settings.amplifier );
 
     // logs
     console.log("quantity:", quantity.to_string());

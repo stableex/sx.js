@@ -11,13 +11,13 @@ import { get_pools, get_settings, get_inverse_price, get_inverse_fee } from ".."
     // calculate inverse price
     const out = asset("199.994144662 EOSDT");
     const symcode = symbol_code("USDT");
-    const price = get_inverse_price( out, symcode, pools );
+    const price = get_inverse_price( out, symcode, pools, settings.amplifier );
     const fee = get_inverse_fee( price, settings );
     const total = Asset.plus( price, fee );
 
     // logs
-    console.log("out:", out);
-    console.log("symcode:", symcode);
+    console.log("out:", out.to_string());
+    console.log("symcode:", symcode.to_string());
     console.log("price:", price.to_string());
     console.log("fee:", fee.to_string());
     console.log("total:", total.to_string());

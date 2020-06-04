@@ -7,7 +7,7 @@ import { get_pools, get_settings, get_slippage } from "..";
     const settings = await get_settings( rpc );
 
     // calculate price
-    const quantity = "100.0000 USDE";
+    const quantity = "800.000000000 EOSDT";
     const symcode = "USDT";
     const slippage = get_slippage( quantity, symcode, pools, settings );
 

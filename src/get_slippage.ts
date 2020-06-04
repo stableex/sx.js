@@ -1,17 +1,18 @@
-import { SymbolCode, number_to_asset, asset_to_number, Asset, asset } from "eos-common";
+import { SymbolCode, Asset, asset_to_number } from "eos-common";
 import { Pools, Settings } from "./interfaces";
+import { get_uppers } from "./get_price";
 import { get_price } from "./get_price";
 import { get_fee } from "./get_fee";
 
 export function get_slippage( quantity: Asset | string, symcode: SymbolCode | string, pools: Pools, settings: Settings ): number {
-    const fee = get_fee( quantity, settings );
-    const price = asset_to_number( get_price( Asset.minus( asset(quantity), fee ), symcode, pools ) );
-    const per_unit = price * 10000 / Number( asset(quantity).amount );
+    const _quantity = new Asset( quantity );
+
+    const fee = get_fee( _quantity, settings );
+    const price = asset_to_number( get_price( Asset.minus( _quantity, fee ), symcode, pools, settings.amplifier ) );
 
     // calculate price using 1 as unit
-    const min_quantity = number_to_asset( asset_to_number(settings.min_convert), asset(quantity).symbol );
-    const min_price = asset_to_number( get_price( min_quantity, symcode, pools ) );
-    const min_per_unit = min_price * 10000 / Number(min_quantity.amount);
+    const [ base_upper, quote_upper ] = get_uppers( _quantity.symbol.code(), new SymbolCode(symcode), pools, settings.amplifier )
+    const min_price = quote_upper / base_upper * asset_to_number( _quantity );
 
-    return Number(Number(min_per_unit - per_unit).toFixed(4));
+    return Number(( min_price / price - 1).toFixed(4));
 }
