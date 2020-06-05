@@ -9,7 +9,7 @@ export async function get_pools( rpc: JsonRpc, options: {
     const pools: Pools = {}
 
     // optional params
-    const code = options.code ? options.code : "stablestable";
+    const code = options.code ? options.code : "stable.sx";
     const scope = code;
     const table = options.table ? options.table : "tokens";
 

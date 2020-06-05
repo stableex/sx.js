@@ -7,7 +7,7 @@ export async function get_settings( rpc: JsonRpc, options: {
 } = {} ): Promise<Settings> {
 
     // optional params
-    const code = options.code ? options.code : "stablestable";
+    const code = options.code ? options.code : "stable.sx";
     const scope = code;
     const table = options.table ? options.table : "settings";
 
