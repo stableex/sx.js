@@ -7,22 +7,18 @@
 
 > Stable Asset Liquidity Exchange - Javascript Library
 
-## Goal
-
-Utility library to fetch settings, liquidity pools & price calcuations.
-
 ## Install
 
 Using Yarn:
 
 ```bash
-yarn add sxjs
+$ yarn add sxjs
 ```
 
 or using NPM:
 
 ```bash
-npm install --save sxjs
+$ npm install --save sxjs
 ```
 
 ## Quick Start
@@ -43,10 +39,11 @@ import { get_tokens, get_settings, get_rate } from "sxjs";
     // calculate price
     const quantity = "10.0000 EOS";
     const symcode = "EOSDT";
-    const { out, fee, slippage } = get_rate( quantity, symcode, tokens, settings );
+    const { out, fee, slippage, price } = get_rate( quantity, symcode, tokens, settings );
 
-    // fee: 0.0300 EOS
     // out: 28.258706491 EOSDT
+    // fee: 0.0300 EOS
     // slippage: 0.0043
+    // price: 28.400453038118204
 })();
 ```

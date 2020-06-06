@@ -18,5 +18,5 @@ import { get_tokens, get_settings, get_price, get_fee } from "..";
     // logs
     console.log("quantity:", quantity.to_string());
     console.log("fee:", fee.to_string());
-    console.log("price:", price.to_string());
+    console.log("price:", price);
 })();

@@ -1,4 +1,4 @@
-import { Asset, SymbolCode, check, asset } from "eos-common";
+import { Asset, SymbolCode, check, asset, number_to_asset } from "eos-common";
 import { Tokens, Settings } from "./interfaces"
 import { get_fee, get_inverse_fee } from "./get_fee";
 import { get_price, get_inverse_price } from "./get_price";
@@ -24,17 +24,26 @@ function check_min_pool_ratio( out: Asset | string, tokens: Tokens ): void
     check( Number(remaining.amount) / Number(token.depth.amount) >= 0.2, asset(out).symbol.code().to_string() + " pool ratio must be above 20%" );
 }
 
-export function get_rate( quantity: Asset | string, symcode: SymbolCode | string, tokens: Tokens, settings: Settings ): { out: Asset; fee: Asset; slippage: number }
+export function get_rate( quantity: Asset | string, symcode: SymbolCode | string, tokens: Tokens, settings: Settings ): { out: Asset; fee: Asset; slippage: number; price: number }
 {
-    check_max_pool_ratio( quantity, tokens );
+    // params
+    const _quantity = new Asset( quantity );
+    const quote = new SymbolCode( symcode );
+    const quote_sym = tokens[ quote.to_string() ].balance.symbol;
 
-    const fee = get_fee( quantity, settings );
-    const out = get_price( Asset.minus( asset(quantity), fee ), symcode, tokens, settings );
-    const slippage = get_slippage( quantity, symcode, tokens, settings );
+    // input validation
+    check_max_pool_ratio( _quantity, tokens );
 
+    // calculations
+    const fee = get_fee( _quantity, settings );
+    const price = get_price( Asset.minus( _quantity, fee ), quote, tokens, settings );
+    const slippage = get_slippage( _quantity, quote, tokens, settings );
+    const out = number_to_asset( price, quote_sym )
+
+    // output validation
     check_min_pool_ratio( out, tokens );
 
-    return { out, fee, slippage };
+    return { out, fee, slippage, price };
 }
 
 export function get_inverse_rate( out: Asset | string, symcode: SymbolCode | string, tokens: Tokens, settings: Settings ): { quantity: Asset; fee: Asset; slippage: number }
