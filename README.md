@@ -29,23 +29,24 @@ npm install --save sxjs
 
 ```ts
 import { JsonRpc } from 'eosjs';
-import { get_pools, get_settings, get_rate } from "sxjs";
+import { get_tokens, get_settings, get_rate } from "sxjs";
 
 (async () => {
     // nodeos
     const rpc = new JsonRpc("https://eos.eosn.io", { fetch: require('node-fetch') });
 
     // settings (HTTP request)
-    const pools = await get_pools( rpc );
-    const settings = await get_settings( rpc );
+    const code = "swap.sx";
+    const tokens = await get_tokens( rpc, code );
+    const settings = await get_settings( rpc, code );
 
     // calculate price
-    const quantity = "100.0000 USDT";
+    const quantity = "10.0000 EOS";
     const symcode = "EOSDT";
-    const { out, fee, slippage } = get_rate( quantity, symcode, pools, settings );
+    const { out, fee, slippage } = get_rate( quantity, symcode, tokens, settings );
 
-    // fee => 0.2000 USDT
-    // out => 99.853579587 EOSDT
-    // slippage => 0.0053
+    // fee: 0.0300 EOS
+    // out: 28.258706491 EOSDT
+    // slippage: 0.0043
 })();
 ```

@@ -1,15 +1,11 @@
 import { JsonRpc } from 'eosjs';
 import { Settings } from "./interfaces";
 
-export async function get_settings( rpc: JsonRpc, options: {
-    code?: string;
-    table?: string;
-} = {} ): Promise<Settings> {
+export async function get_settings( rpc: JsonRpc, code: string ): Promise<Settings> {
 
     // optional params
-    const code = options.code ? options.code : "stable.sx";
     const scope = code;
-    const table = options.table ? options.table : "settings";
+    const table = "settings";
 
     const results = await rpc.get_table_rows({json: true, code, scope, table, limit: 1 });
 

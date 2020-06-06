@@ -9,11 +9,11 @@ export interface Settings {
     amplifier: number;
 }
 
-export interface Pools {
-    [ symcode: string ]: Pool;
+export interface Tokens {
+    [ symcode: string ]: Token;
 }
 
-export interface Pool {
+export interface Token {
     sym: Sym;
     contract: Name;
     balance: Asset;

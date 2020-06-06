@@ -20,17 +20,11 @@ function parse_volume( row: any): Volume {
     }
 }
 
-export async function get_volume( rpc: JsonRpc, options: {
-    code?: string;
-    table?: string;
-    days?: number;
-} = {} ): Promise<Volume[]> {
+export async function get_volume( rpc: JsonRpc, code: string, limit = 1 ): Promise<Volume[]> {
 
     // optional params
-    const code = options.code ? options.code : "stable.sx";
     const scope = code;
-    const table = options.table ? options.table : "volume";
-    const days = options.days ? options.days : 1;
+    const table = "volume";
 
     const volume: Array<{
         timestamp: string;
@@ -38,7 +32,7 @@ export async function get_volume( rpc: JsonRpc, options: {
         fees: kv;
     }> = [];
 
-    const results = await rpc.get_table_rows({json: true, code, scope, table, reverse: true, limit: days});
+    const results = await rpc.get_table_rows({json: true, code, scope, table, reverse: true, limit});
     for (const row of results.rows) {
         volume.push( parse_volume( row ));
     }

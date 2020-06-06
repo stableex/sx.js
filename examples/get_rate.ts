@@ -1,15 +1,16 @@
 import { rpc } from "./config";
-import { get_pools, get_settings, get_rate } from "..";
+import { get_tokens, get_settings, get_rate } from "..";
 
 (async () => {
     // settings
-    const pools = await get_pools( rpc );
-    const settings = await get_settings( rpc );
+    const code = "swap.sx";
+    const tokens = await get_tokens( rpc, code );
+    const settings = await get_settings( rpc, code );
 
     // calculate price
-    const quantity = "100.0000 USDT";
+    const quantity = "10.0000 EOS";
     const symcode = "EOSDT";
-    const { out, fee, slippage } = get_rate( quantity, symcode, pools, settings );
+    const { out, fee, slippage } = get_rate( quantity, symcode, tokens, settings );
 
     // logs
     console.log("quantity:", quantity );
