@@ -7,7 +7,7 @@ import { get_tokens, get_settings, get_inverse_rate } from "..";
     const pools = await get_tokens( rpc, code );
     const settings = await get_settings( rpc, code );
 
-    // calculate price
+    // calculate inverse rate
     const out = "10.0000 EOS";
     const symcode = "EOSDT";
     const rate = get_inverse_rate( out, symcode, pools, settings );

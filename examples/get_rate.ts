@@ -7,7 +7,7 @@ import { get_tokens, get_settings, get_rate } from "..";
     const tokens = await get_tokens( rpc, code );
     const settings = await get_settings( rpc, code );
 
-    // calculate price
+    // calculate rate
     const quantity = "1.0000 EOS";
     const symcode = "USDT";
     const rate = get_rate( quantity, symcode, tokens, settings );

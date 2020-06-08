@@ -7,7 +7,7 @@ import { get_tokens, get_settings, get_slippage } from "..";
     const tokens = await get_tokens( rpc, code );
     const settings = await get_settings( rpc, code );
 
-    // calculate price
+    // calculate slippage
     const quantity = "100.0000 EOS";
     const symcode = "EOSDT";
     const slippage = get_slippage( quantity, symcode, tokens, settings );
