@@ -10,13 +10,11 @@ import { get_tokens, get_settings, get_price, get_fee } from "..";
     const settings = await get_settings( rpc, code );
 
     // calculate price
-    const quantity = asset("10.0000 EOS");
-    const symcode = symbol_code("EOSDT");
-    const fee = get_fee( quantity, settings );
-    const price = get_price( Asset.minus( quantity, fee ), symcode, tokens, settings );
+    const quantity = asset("1.0000 EOS");
+    const symcode = symbol_code("BOID");
+    const price = get_price( quantity, symcode, tokens, settings );
 
     // logs
     console.log("quantity:", quantity.to_string());
-    console.log("fee:", fee.to_string());
     console.log("price:", price);
 })();

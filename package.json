@@ -1,6 +1,6 @@
 {
   "name": "sxjs",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "SX - Stable Asset Liquidity Exchange",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,13 +10,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run test && npm run build",
-    "test": "jest --coverage __tests__/**.test.ts",
-    "posttest": "eslint . --ext .ts",
-    "docs": "tsc --target ES2019 && documentation readme dist/src/**.js -s API"
-  },
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
+    "test": "jest --coverage __tests__/**.test.ts"
   },
   "repository": {
     "type": "git",
@@ -24,19 +18,12 @@
   },
   "author": "Denis Carriere <denis@eosnation.io>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/stableex/sx.js/issues"
-  },
-  "homepage": "https://github.com/stableex/sx.js#readme",
+  "homepage": "https://github.com/stableex/sx.js",
   "devDependencies": {
     "@types/jest": "*",
-    "@typescript-eslint/eslint-plugin": "^2.20.0",
-    "@typescript-eslint/parser": "*",
     "eosjs": "^21.0.1-rc2",
-    "eslint": "*",
-    "eslint-plugin-jest": "*",
     "jest": "*",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "*",
     "ts-jest": "*",
     "typescript": "*"
   },

@@ -10,13 +10,10 @@ import { get_tokens, get_settings, get_inverse_rate } from "..";
     // calculate price
     const out = "10.0000 EOS";
     const symcode = "EOSDT";
-    const { quantity, fee, slippage } = get_inverse_rate( out, symcode, pools, settings );
+    const rate = get_inverse_rate( out, symcode, pools, settings );
 
     // logs
-    console.log("out:", out );
-    console.log("symcode:", symcode );
-    console.log("fee:", fee.to_string());
-    console.log("quantity:", quantity.to_string());
-    console.log("slippage:", slippage);
+    console.log("out:", out);
+    console.log("rate:", rate.to_string() );
 })();
 

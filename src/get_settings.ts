@@ -6,7 +6,6 @@ export async function get_settings( rpc: JsonRpc, code: string ): Promise<Settin
     // optional params
     const scope = code;
     const table = "settings";
-
     const results = await rpc.get_table_rows({json: true, code, scope, table, limit: 1 });
 
     return {

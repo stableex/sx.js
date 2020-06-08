@@ -3,20 +3,16 @@ import { get_tokens, get_settings, get_rate } from "..";
 
 (async () => {
     // settings
-    const code = "eosdt.sx";
+    const code = "swap.sx";
     const tokens = await get_tokens( rpc, code );
     const settings = await get_settings( rpc, code );
 
     // calculate price
-    const quantity = "100.0000 EOS";
-    const symcode = "EOSDT";
-    const { out, price, fee, slippage } = get_rate( quantity, symcode, tokens, settings );
+    const quantity = "1.0000 EOS";
+    const symcode = "USDT";
+    const rate = get_rate( quantity, symcode, tokens, settings );
 
     // logs
     console.log("quantity:", quantity );
-    console.log("symcode:", symcode );
-    console.log("out:", out.to_string());
-    console.log("fee:", fee.to_string());
-    console.log("slippage:", slippage);
-    console.log("price:", price);
+    console.log("rate:", rate.to_string());
 })();

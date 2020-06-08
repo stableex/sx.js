@@ -36,13 +36,21 @@ import { get_tokens, get_settings, get_rate } from "sxjs";
     const settings = await get_settings( rpc, code );
 
     // calculate price
-    const quantity = "10.0000 EOS";
-    const symcode = "EOSDT";
-    const { out, fee, slippage, price } = get_rate( quantity, symcode, tokens, settings );
-
-    // out: 28.258706491 EOSDT
-    // fee: 0.0300 EOS
-    // slippage: 0.0043
-    // price: 28.400453038118204
+    const quantity = "1.0000 EOS";
+    const symcode = "USDT";
+    const rate = get_rate( quantity, symcode, tokens, settings );
+    // => 2.7726 USDT
 })();
 ```
+
+## Examples
+
+- [`get_fee`](/examples/get_fee.ts)
+- [`get_price`](/examples/get_price.ts)
+- [`get_rate`](/examples/get_rate.ts)
+- [`get_settings`](/examples/get_settings.ts)
+- [`get_slippage`](/examples/get_slippage.ts)
+- [`get_spot_price`](/examples/get_spot_price.ts)
+- [`get_tokens`](/examples/get_tokens.ts)
+- [`get_uppers`](/examples/get_uppers.ts)
+- [`get_volume`](/examples/get_volume.ts)
