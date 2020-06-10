@@ -4,11 +4,11 @@ import { get_settings, get_fee } from "../";
 
 (async () => {
     // settings
-    const code = "swap.sx";
+    const code = "eosdt.sx";
     const settings = await get_settings( rpc, code );
 
     // calculate fee
-    const quantity = asset("10.0000 EOS");
+    const quantity = asset("100.0000 EOS");
     const fee = get_fee( quantity, settings );
 
     // logs
