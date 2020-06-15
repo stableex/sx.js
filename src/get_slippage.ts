@@ -13,5 +13,5 @@ export function get_slippage( quantity: Asset | string, symcode: SymbolCode | st
     const spot_price = 1 / get_spot_price( _quantity.symbol.code(), symcode, tokens, settings );
     const spot_price_per_unit = spot_price * asset_to_number( _quantity );
 
-    return Number(( spot_price_per_unit / price - 1 ).toFixed(4));
+    return spot_price_per_unit / price - 1;
 }
