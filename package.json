@@ -1,6 +1,6 @@
 {
   "name": "sxjs",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "SX - Stable Asset Liquidity Exchange",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,6 +28,6 @@
     "typescript": "*"
   },
   "dependencies": {
-    "eos-common": "^0.7.9"
+    "eos-common": "^0.8.0"
   }
 }
