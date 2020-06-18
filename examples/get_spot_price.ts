@@ -8,8 +8,8 @@ import { get_tokens, get_settings, get_spot_price } from "..";
     const settings = await get_settings( rpc, code );
 
     // calculate spot price
-    const base = "EOS";
-    const quote = "EOSDT";
+    const base = "USDT";
+    const quote = "EOS";
     const spot_price = get_spot_price( base, quote, tokens, settings );
 
     // logs
