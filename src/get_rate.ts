@@ -2,7 +2,6 @@ import { Asset, SymbolCode, number_to_asset } from "eos-common";
 import { Tokens, Settings } from "./interfaces"
 import { get_fee, get_inverse_fee } from "./get_fee";
 import { get_price, get_inverse_price } from "./get_price";
-import { check_max_pool_ratio, check_min_pool_ratio } from "./checks";
 
 export function get_rate( quantity: Asset | string, symcode: SymbolCode | string, tokens: Tokens, settings: Settings ): Asset
 {

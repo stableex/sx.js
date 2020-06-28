@@ -25,3 +25,13 @@ export function check_min_pool_ratio( out: Asset | string, tokens: Tokens ): voi
 
     check( Number(remaining.amount) / Number(token.depth.amount) >= 0.2, new Asset( out ).symbol.code().to_string() + " pool ratio must be above 20%" );
 }
+
+export function check_remaining_balance( out: Asset | string, tokens: Tokens ): void
+{
+    // validate input
+    const token = tokens[ new Asset( out ).symbol.code().to_string() ]
+    check( !!token, "[symcode] token does not exist");
+    const remaining = Asset.minus( token.balance, new Asset( out ) );
+
+    check( remaining.amount.greaterOrEquals(0), remaining.symbol.code().to_string() + " insufficient remaining balance" );
+}

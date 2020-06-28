@@ -1,4 +1,5 @@
 export * from "./src/bancor";
+export * from "./src/checks";
 export * from "./src/get_fee";
 export * from "./src/get_price";
 export * from "./src/get_rate";
