@@ -4,7 +4,7 @@ import { asset } from "eos-common";
 
 (async () => {
     // settings
-    const code = "eosdt.sx";
+    const code = "swap.sx";
     const tokens = await get_tokens( rpc, code );
     const settings = await get_settings( rpc, code );
 
