@@ -1,6 +1,5 @@
 import { rpc } from "./config";
-import { get_tokens, get_settings, get_rate, get_slippage } from "..";
-import { asset } from "eos-common";
+import { get_tokens, get_settings, get_rate, get_slippage, check_remaining_balance} from "..";
 
 (async () => {
     // settings
@@ -13,6 +12,9 @@ import { asset } from "eos-common";
     const symcode = "USDT";
     const rate = get_rate( quantity, symcode, tokens, settings );
     const slippage = get_slippage( quantity, symcode, tokens, settings );
+
+    // validation
+    check_remaining_balance( rate, tokens );
 
     // logs
     console.log("quantity:", quantity );
