@@ -23,8 +23,8 @@ $ npm install --save sxjs
 ## Quick Start
 
 ```ts
-import { JsonRpc } from 'eosjs';
-import { get_tokens, get_settings, get_rate } from "sxjs";
+const { JsonRpc } = require('eosjs');
+const { get_tokens, get_settings, get_rate } = require("sxjs");
 
 (async () => {
     // nodeos
@@ -39,6 +39,7 @@ import { get_tokens, get_settings, get_rate } from "sxjs";
     const quantity = "1.0000 EOS";
     const symcode = "USDT";
     const rate = get_rate( quantity, symcode, tokens, settings );
+    console.log(rate.to_string());
     // => 2.7726 USDT
 })();
 ```
