@@ -18,6 +18,7 @@ export interface Token {
     contract: Name;
     balance: Asset;
     depth: Asset;
+    reserve: Asset;
 }
 
 export interface Volume {
