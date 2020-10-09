@@ -19,6 +19,7 @@ export interface Token {
     balance: Asset;
     depth: Asset;
     reserve: Asset;
+    virtual_reserve: Asset;
 }
 
 export interface Volume {
