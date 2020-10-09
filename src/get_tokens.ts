@@ -18,7 +18,8 @@ export async function get_tokens( rpc: JsonRpc, code: string, limit = 50 ): Prom
             contract: new Name(row.contract),
             balance: new Asset(row.balance),
             depth: new Asset(row.depth),
-            reserve: new Asset(row.reserve)
+            reserve: new Asset(row.reserve),
+            virtual_reserve: new Asset(row.virtual_reserve)
         }
     }
     return tokens;
