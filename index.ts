@@ -1,4 +1,5 @@
 export * from "./src/bancor";
+export * from "./src/dfuse";
 export * from "./src/checks";
 export * from "./src/get_fee";
 export * from "./src/get_price";
@@ -8,5 +9,7 @@ export * from "./src/get_slippage";
 export * from "./src/get_spot_price";
 export * from "./src/get_tokens";
 export * from "./src/get_uppers";
+export * from "./src/get_vault";
+export * from "./src/get_vault_growth";
 export * from "./src/get_volume";
 export * from "./src/interfaces";
