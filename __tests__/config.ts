@@ -10,7 +10,8 @@ export const USDT = {
     contract: name('tethertether'),
     balance: asset("250.0000 USDT"),
     depth: asset("250.0000 USDT"),
-    reserve: asset("250.0000 USDT")
+    reserve: asset("250.0000 USDT"),
+    virtual_reserve: asset("50000.0000 EOS")
 }
 
 export const EOS = {
@@ -18,7 +19,8 @@ export const EOS = {
     contract: name('eosio.token'),
     balance: asset("100.0000 EOS"),
     depth: asset("100.0000 EOS"),
-    reserve: asset("100.0000 EOS")
+    reserve: asset("100.0000 EOS"),
+    virtual_reserve: asset("20000.0000 EOS")
 }
 
 export const tokens = {
