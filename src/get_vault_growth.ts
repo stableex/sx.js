@@ -13,7 +13,7 @@ export async function get_vault_apy( growth: Growth ) {
     return growth.delta * ( 172800 / growth.delta_block_num  ) * 365 / growth.current;
 }
 
-export async function get_vault_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, delta_block_num = 7200, ): Promise<Growth> {
+export async function get_vault_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, delta_block_num = 172800 ): Promise<Growth> {
     const previous_vault = await get_vault( client, symcode, last_irreversible_block_num - delta_block_num );
     const current_vault = await get_vault( client, symcode, last_irreversible_block_num );
 
