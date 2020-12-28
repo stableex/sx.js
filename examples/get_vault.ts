@@ -1,34 +1,40 @@
 import { rpc, client } from "./config";
-import { get_vault } from "../src/get_vault";
+import { get_vault, get_vault_rate } from "../src/get_vault";
 import { get_vault_growth, get_vault_apy } from "../src/get_vault_growth";
 
 (async () => {
     const { last_irreversible_block_num } = await rpc.get_info();
 
     // SX Vault
-    const vault = await get_vault(client, "EOS", last_irreversible_block_num );
+    const vault = await get_vault(rpc, "EOS" );
     console.log(vault);
     // {
+    //     deposit: { quantity: '440132.4057 EOS', contract: 'eosio.token' },
+    //     staked: { quantity: '394700.1742 EOS', contract: 'eosio.token' },
+    //     supply: { quantity: '4196979589.2885 SXEOS', contract: 'token.sx' },
     //     account: 'flash.sx',
-    //     deposit: { quantity: '2190.3656 EOS', contract: 'eosio.token' },
-    //     last_updated: '2020-12-09T03:10:50',
-    //     staked: { quantity: '809.3592 EOS', contract: 'eosio.token' },
-    //     supply: { quantity: '21306475.0105 SXEOS', contract: 'token.sx' }
+    //     last_updated: '2020-12-28T02:15:00'
     // }
 
-    // value growth
+    // value per share
+    const rate = get_vault_rate( vault );
+    console.log(rate);
+    //=> 9535.720467147825
+
+    // value growth (dfuse required)
     const growth = await get_vault_growth(client, "EOS", last_irreversible_block_num );
     console.log(growth);
     // {
-    //     previous: 9738.417837416475,
-    //     current: 9727.36013134063,
-    //     delta: 11.05770607584418
+    //     delta_block_num: 172800,
+    //     previous: 9538.13194729921,
+    //     current: 9535.720685970111,
+    //     delta: 2.4112613290999434
     // }
 
     // APY
     const apy = await get_vault_apy( growth );
     console.log(apy);
-    // 0.4149186072261594
+    //=> 0.09229615821448967
 
     client.release()
 })();
