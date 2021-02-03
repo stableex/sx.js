@@ -9,9 +9,13 @@ export interface Growth {
     previous: number,
     current: number,
     delta: number,
+    volume: number,
+    trades: number,
+    reserves: number,
+    utilization: number,
 }
 
-export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<Pairs|any> {
+export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<Pairs> {
     return stateTableRow<Pairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
@@ -28,6 +32,19 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
     // value per share
     const previous = previous_curve.virtual_price;
     const current = current_curve.virtual_price;
+    const delta = current - previous;
+
+    // trading stats
+    const volume0 = toNumber(current_curve.volume0) - toNumber(previous_curve.volume0)
+    const volume1 = toNumber(current_curve.volume1) - toNumber(previous_curve.volume1)
+    const volume = volume0 + volume1;
+    const trades = current_curve.trades - previous_curve.trades
+
+    // utilization calculated by how much traded vs. reserve
+    const reserve0 = toNumber(current_curve.reserve0.quantity);
+    const reserve1 = toNumber(current_curve.reserve0.quantity);
+    const reserves = reserve0 + reserve1;
+    const utilization = volume / reserves * 100;
 
     return {
         previous_block_num,
@@ -35,6 +52,14 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
         delta_block_num,
         previous,
         current,
-        delta: current - previous
+        delta,
+        volume,
+        trades,
+        reserves,
+        utilization
     }
+}
+
+function toNumber( quantity: string ) {
+    return Number(quantity.split(" ")[0] || 0);
 }

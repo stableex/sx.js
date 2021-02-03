@@ -16,6 +16,7 @@ export interface Pairs {
     price1_last: number;
     volume0: string;
     volume1: string;
+    trades: number;
     last_updated: string;
 }
 
