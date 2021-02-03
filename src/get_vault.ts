@@ -19,7 +19,7 @@ export async function get_vault( rpc: JsonRpc, symcode: string ): Promise<Vault>
     const code = "vaults.sx";
     const scope = code;
     const table = "vault";
-    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_limit: symcode, upper_limit: symcode });
+    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_bound: symcode, upper_bound: symcode });
 
     return results.rows[0];
 }

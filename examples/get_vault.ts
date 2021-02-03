@@ -3,7 +3,7 @@ import { get_vault, get_vault_rate } from "../src/get_vault";
 
 (async () => {
     // SX Vault
-    const vault = await get_vault(rpc, "EOS" );
+    const vault = await get_vault(rpc, "USDT" );
     console.log(vault);
     // {
     //     deposit: { quantity: '440132.4057 EOS', contract: 'eosio.token' },
