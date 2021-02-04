@@ -3,15 +3,15 @@ import { Pairs } from "./get_curve";
 import { stateTableRow } from "./dfuse";
 
 export interface Growth {
-    previous_block_num: number,
-    current_block_num: number,
-    delta_block_num: number,
-    previous: number,
-    current: number,
-    delta: number,
+    block_num_previous: number,
+    block_num_current: number,
+    block_num_delta: number,
+    virtual_price: number,
+    virtual_price_delta: number,
     volume: number,
     trades: number,
     reserves: number,
+    reserves_delta: number,
     utilization: number,
 }
 
@@ -20,42 +20,48 @@ export async function get_dfuse_curve( client: DfuseClient, symcode: string, blo
 }
 
 export async function get_curve_apy( growth: Growth ) {
-    return growth.delta * ( 172800 / growth.delta_block_num  ) * 365 / growth.current;
+    return growth.virtual_price_delta * ( 172800 / growth.block_num_delta  ) * 365 / growth.virtual_price;
 }
 
-export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, delta_block_num = 172800 ): Promise<Growth> {
-    const previous_block_num = last_irreversible_block_num - delta_block_num;
-    const current_block_num = last_irreversible_block_num;
-    const previous_curve = await get_dfuse_curve( client, symcode, previous_block_num );
-    const current_curve = await get_dfuse_curve( client, symcode, current_block_num );
+export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800 ): Promise<Growth> {
+    const block_num_previous = last_irreversible_block_num - block_num_delta;
+    const block_num_current = last_irreversible_block_num;
+    const curve = await get_dfuse_curve( client, symcode, block_num_current );
+    const curve_previous = await get_dfuse_curve( client, symcode, block_num_previous );
 
     // value per share
-    const previous = previous_curve.virtual_price;
-    const current = current_curve.virtual_price;
-    const delta = current - previous;
+    const virtual_price = curve.virtual_price;
+    const virtual_price_previous = curve_previous.virtual_price;
+    const virtual_price_delta = virtual_price - virtual_price_previous;
 
-    // trading stats
-    const volume0 = toNumber(current_curve.volume0) - toNumber(previous_curve.volume0)
-    const volume1 = toNumber(current_curve.volume1) - toNumber(previous_curve.volume1)
+    // trade volume stats
+    const volume0 = toNumber(curve.volume0) - toNumber(curve_previous.volume0)
+    const volume1 = toNumber(curve.volume1) - toNumber(curve_previous.volume1)
     const volume = volume0 + volume1;
-    const trades = current_curve.trades - previous_curve.trades
+    const trades = curve.trades - curve_previous.trades
 
     // utilization calculated by how much traded vs. reserve
-    const reserve0 = toNumber(current_curve.reserve0.quantity);
-    const reserve1 = toNumber(current_curve.reserve0.quantity);
+    const reserve0 = toNumber(curve.reserve0.quantity);
+    const reserve1 = toNumber(curve.reserve1.quantity);
     const reserves = reserve0 + reserve1;
     const utilization = volume / reserves * 100;
 
+    // reserve growth
+    const previous_reserve0 = toNumber(curve_previous.reserve0.quantity);
+    const previous_reserve1 = toNumber(curve_previous.reserve1.quantity);
+    const previous_reserves = previous_reserve0 + previous_reserve1;
+    const reserves_delta = reserves - previous_reserves;
+
     return {
-        previous_block_num,
-        current_block_num,
-        delta_block_num,
-        previous,
-        current,
-        delta,
+        block_num_previous,
+        block_num_current,
+        block_num_delta,
+        virtual_price,
+        virtual_price_delta,
         volume,
         trades,
         reserves,
+        reserves_delta,
         utilization
     }
 }
