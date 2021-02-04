@@ -49,9 +49,7 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
 
     // value per share APY
     const virtual_price = curve.virtual_price;
-    const virtual_price_previous = curve_previous.virtual_price;
-    const virtual_price_delta = virtual_price - virtual_price_previous;
-    const virtual_price_growth = virtual_price_delta * 365
+    const virtual_price_growth = (virtual_price - curve_previous.virtual_price) * 365
 
     return {
         block_num_previous,
