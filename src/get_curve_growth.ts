@@ -7,11 +7,12 @@ export interface Growth {
     block_num_current: number,
     block_num_delta: number,
     virtual_price: number,
-    virtual_price_delta: number,
+    virtual_price_growth: number,
+    real_growth: number,
     volume: number,
     trades: number,
     reserves: number,
-    reserves_delta: number,
+    reserves_growth: number,
     utilization: number,
 }
 
@@ -19,20 +20,11 @@ export async function get_dfuse_curve( client: DfuseClient, symcode: string, blo
     return stateTableRow<Pairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
-export async function get_curve_apy( growth: Growth ) {
-    return growth.virtual_price_delta * ( 172800 / growth.block_num_delta  ) * 365 / growth.virtual_price;
-}
-
-export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800 ): Promise<Growth> {
+export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800, fee = 4 ): Promise<Growth> {
     const block_num_previous = last_irreversible_block_num - block_num_delta;
     const block_num_current = last_irreversible_block_num;
     const curve = await get_dfuse_curve( client, symcode, block_num_current );
     const curve_previous = await get_dfuse_curve( client, symcode, block_num_previous );
-
-    // value per share
-    const virtual_price = curve.virtual_price;
-    const virtual_price_previous = curve_previous.virtual_price;
-    const virtual_price_delta = virtual_price - virtual_price_previous;
 
     // trade volume stats
     const volume0 = toNumber(curve.volume0) - toNumber(curve_previous.volume0)
@@ -50,18 +42,28 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
     const previous_reserve0 = toNumber(curve_previous.reserve0.quantity);
     const previous_reserve1 = toNumber(curve_previous.reserve1.quantity);
     const previous_reserves = previous_reserve0 + previous_reserve1;
-    const reserves_delta = reserves - previous_reserves;
+    const reserves_growth = reserves - previous_reserves;
+
+    // calculate real growth APY
+    const real_growth = volume * fee / 10000 * 365 / reserves;
+
+    // value per share APY
+    const virtual_price = curve.virtual_price;
+    const virtual_price_previous = curve_previous.virtual_price;
+    const virtual_price_delta = virtual_price - virtual_price_previous;
+    const virtual_price_growth = virtual_price_delta * 365
 
     return {
         block_num_previous,
         block_num_current,
         block_num_delta,
         virtual_price,
-        virtual_price_delta,
+        virtual_price_growth,
+        real_growth,
         volume,
         trades,
         reserves,
-        reserves_delta,
+        reserves_growth,
         utilization
     }
 }

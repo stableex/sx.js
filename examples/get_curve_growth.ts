@@ -1,5 +1,5 @@
 import { rpc, client } from "./config";
-import { get_curve_growth, get_curve_apy, get_dfuse_curve } from "../src/get_curve_growth";
+import { get_curve_growth } from "../src/get_curve_growth";
 
 (async () => {
     const { last_irreversible_block_num } = await rpc.get_info();
@@ -8,22 +8,18 @@ import { get_curve_growth, get_curve_apy, get_dfuse_curve } from "../src/get_cur
     const growth = await get_curve_growth(client, "SXA", last_irreversible_block_num - 1200 );
     console.log(growth);
     // {
-    //     block_num_previous: 166438656,
-    //     block_num_current: 166611456,
+    //     block_num_previous: 166442927,
+    //     block_num_current: 166615727,
     //     block_num_delta: 172800,
     //     virtual_price: 1.0093631288323854,
-    //     virtual_price_delta: 0.0003792261264192742,
-    //     volume: 22749.685200000004,
-    //     trades: 191,
+    //     virtual_price_growth: 0.32267464204724705,
+    //     real_growth: 0.2429801121991075,
+    //     volume: 21987.581900000005,
+    //     trades: 182,
     //     reserves: 13211.727200000001,
-    //     reserves_delta: 3710.991900000001,
-    //     utilization: 172.1931194582946
+    //     reserves_growth: 3715.7453000000023,
+    //     utilization: 166.42473438295033
     // }
-
-    // APY
-    const apy = await get_curve_apy( growth );
-    console.log(apy);
-    //=> 0.13713353716729698
 
     client.release()
 })();
