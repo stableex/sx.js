@@ -3,25 +3,26 @@ import { Pairs } from "./get_curve";
 import { stateTableRow } from "./dfuse";
 
 export interface Growth {
-    block_num_previous: number,
-    block_num_current: number,
-    block_num_delta: number,
-    virtual_price: number,
-    virtual_price_growth: number,
-    apy_average_revenue: number,
-    apy_realtime_revenue: number,
-    volume: number,
-    trades: number,
-    reserves: number,
-    reserves_growth: number,
-    utilization: number,
+    block_num_previous: number;
+    block_num_current: number;
+    block_num_delta: number;
+    virtual_price: number;
+    virtual_price_growth: number;
+    apy_average_revenue: number;
+    apy_realtime_revenue: number;
+    volume: number;
+    fees: number;
+    trades: number;
+    reserves: number;
+    reserves_growth: number;
+    utilization: number;
 }
 
 export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<Pairs> {
     return stateTableRow<Pairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
-export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800, fee = 4 ): Promise<Growth> {
+export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<Growth> {
     const block_num_previous = last_irreversible_block_num - block_num_delta;
     const block_num_current = last_irreversible_block_num;
     const curve = await get_dfuse_curve( client, symcode, block_num_current );
@@ -46,9 +47,12 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
     const reserves_growth = reserves - previous_reserves;
 
     // calculate real growth APY
+    const trade_fees = volume * trade_fee / 10000;
+    const protocol_fees = volume * protocol_fee / 10000;
+    const fees = trade_fees + protocol_fees;
     const average_reserves = (previous_reserves + reserves) / 2;
-    const apy_average_revenue = volume * fee / 10000 * 365 / average_reserves;
-    const apy_realtime_revenue = volume * fee / 10000 * 365 / reserves;
+    const apy_average_revenue = fees * 365 / average_reserves;
+    const apy_realtime_revenue = fees * 365 / reserves;
 
     // value per share APY
     const virtual_price = curve.virtual_price;
@@ -63,6 +67,7 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
         apy_average_revenue,
         apy_realtime_revenue,
         volume,
+        fees,
         trades,
         reserves,
         reserves_growth,
