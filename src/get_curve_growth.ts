@@ -5,8 +5,8 @@ import { ExtendedAsset } from "./interfaces";
 
 export interface CurveGrowth {
     // block information
+    block_num: number;
     block_num_previous: number;
-    block_num_current: number;
     block_num_delta: number;
 
     // contract values
@@ -32,10 +32,9 @@ export async function get_dfuse_curve( client: DfuseClient, symcode: string, blo
     return stateTableRow<Pairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
-export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<CurveGrowth> {
-    const block_num_previous = last_irreversible_block_num - block_num_delta;
-    const block_num_current = last_irreversible_block_num;
-    const curve = await get_dfuse_curve( client, symcode, block_num_current );
+export async function get_curve_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<CurveGrowth> {
+    const block_num_previous = block_num - block_num_delta;
+    const curve = await get_dfuse_curve( client, symcode, block_num );
     const curve_previous = await get_dfuse_curve( client, symcode, block_num_previous );
 
     // trade volume stats
@@ -70,8 +69,8 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
 
     return {
         // block information
+        block_num,
         block_num_previous,
-        block_num_current,
         block_num_delta,
 
         // contract values

@@ -20,6 +20,7 @@ export async function get_vault( rpc: JsonRpc, symcode: string ): Promise<Vault>
     return results.rows[0];
 }
 
+// LEGACY (TO BE DEPRECATED)
 export function get_vault_rate( vault: Vault ) {
     const deposit = Number(new Asset(vault.deposit.quantity).amount);
     const supply = Number(new Asset(vault.supply.quantity).amount);
