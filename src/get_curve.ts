@@ -1,9 +1,5 @@
 import { JsonRpc } from 'eosjs';
-
-export interface ExtendedAsset {
-    quantity: string;
-    contract: string;
-}
+import { ExtendedAsset } from './interfaces';
 
 export interface Pairs {
     id: string;
