@@ -1,5 +1,4 @@
 import { JsonRpc } from 'eosjs';
-import { Asset } from "eos-common";
 import { ExtendedAsset } from './interfaces';
 
 export interface Vault {
@@ -18,11 +17,4 @@ export async function get_vault( rpc: JsonRpc, symcode: string ): Promise<Vault>
     const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_bound: symcode, upper_bound: symcode });
 
     return results.rows[0];
-}
-
-// LEGACY (TO BE DEPRECATED)
-export function get_vault_rate( vault: Vault ) {
-    const deposit = Number(new Asset(vault.deposit.quantity).amount);
-    const supply = Number(new Asset(vault.supply.quantity).amount);
-    return supply / deposit;
 }

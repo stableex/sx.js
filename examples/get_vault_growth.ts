@@ -20,13 +20,7 @@ import { get_vault_growth } from "../src/get_vault_growth";
     //     tvl_growth: 22623.34759999998,
     //     fees: 101.16386867487657,
     //     virtual_price: 9433.048129023495,
-    //     virtual_price_growth: 0.09701245256084974,
-    //     current_block_num: 167682667,
-    //     previous_block_num: 167509867,
-    //     delta_block_num: 172800,
-    //     previous: 9435.55531569232,
-    //     current: 9433.048129023495,
-    //     delta: 2.507186668824943
+    //     virtual_price_growth: 0.09701245256084974
     // }
 
     client.release()

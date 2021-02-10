@@ -14,7 +14,6 @@ export interface CurveGrowth {
     reserve0: ExtendedAsset;
     reserve1: ExtendedAsset;
     liquidity: ExtendedAsset;
-    virtual_price: number;
 
     // 24h computed values
     apy_average_revenue: number;
@@ -25,6 +24,7 @@ export interface CurveGrowth {
     utilization: number;
     fees: number;
     trades: number;
+    virtual_price: number;
     virtual_price_growth: number;
 }
 
