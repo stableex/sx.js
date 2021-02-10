@@ -2,10 +2,10 @@ import { rpc, client } from "./config";
 import { get_vault_growth, get_vault_apy } from "../src/get_vault_growth";
 
 (async () => {
-    const { last_irreversible_block_num } = await rpc.get_info();
+    const { head_block_num } = await rpc.get_info();
 
     // value growth (dfuse required)
-    const growth = await get_vault_growth(client, "USDT", last_irreversible_block_num - 1200 );
+    const growth = await get_vault_growth(client, "USDT", head_block_num );
     console.log(growth);
     // {
     //     previous_block_num: 159955872,

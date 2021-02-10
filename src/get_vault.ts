@@ -1,10 +1,6 @@
 import { JsonRpc } from 'eosjs';
 import { Asset } from "eos-common";
-
-export interface ExtendedAsset {
-    quantity: string;
-    contract: string;
-}
+import { ExtendedAsset } from './interfaces';
 
 export interface Vault {
     deposit: ExtendedAsset;

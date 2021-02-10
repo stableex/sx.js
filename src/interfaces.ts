@@ -27,3 +27,8 @@ export interface Volume {
     volume: kv;
     fees: kv;
 }
+
+export interface ExtendedAsset {
+    quantity: string;
+    contract: string;
+}

@@ -2,10 +2,10 @@ import { rpc, client } from "./config";
 import { get_curve_growth } from "../src/get_curve_growth";
 
 (async () => {
-    const { last_irreversible_block_num } = await rpc.get_info();
+    const { head_block_num } = await rpc.get_info();
 
     // value growth (dfuse required)
-    const growth = await get_curve_growth(client, "SXA", last_irreversible_block_num - 1200 );
+    const growth = await get_curve_growth(client, "SXA", head_block_num );
     console.log(growth);
     // {
     //     block_num_previous: 167281129,

@@ -1,11 +1,13 @@
 import { DfuseClient } from "@dfuse/client";
 import { Pairs } from "./get_curve";
 import { stateTableRow } from "./dfuse";
+import { ExtendedAsset } from "./interfaces";
 
-export interface Growth {
+export interface CurveGrowth {
     block_num_previous: number;
     block_num_current: number;
     block_num_delta: number;
+    amplifier: number;
     virtual_price: number;
     virtual_price_growth: number;
     apy_average_revenue: number;
@@ -13,8 +15,11 @@ export interface Growth {
     volume: number;
     fees: number;
     trades: number;
+    reserve0: ExtendedAsset;
+    reserve1: ExtendedAsset;
     reserves: number;
     reserves_growth: number;
+    liquidity: ExtendedAsset;
     utilization: number;
 }
 
@@ -22,7 +27,7 @@ export async function get_dfuse_curve( client: DfuseClient, symcode: string, blo
     return stateTableRow<Pairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
-export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<Growth> {
+export async function get_curve_growth( client: DfuseClient, symcode: string, last_irreversible_block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<CurveGrowth> {
     const block_num_previous = last_irreversible_block_num - block_num_delta;
     const block_num_current = last_irreversible_block_num;
     const curve = await get_dfuse_curve( client, symcode, block_num_current );
@@ -62,6 +67,7 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
         block_num_previous,
         block_num_current,
         block_num_delta,
+        amplifier: curve.amplifier,
         virtual_price,
         virtual_price_growth,
         apy_average_revenue,
@@ -69,8 +75,11 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
         volume,
         fees,
         trades,
+        reserve0: curve.reserve0,
+        reserve1: curve.reserve1,
         reserves,
         reserves_growth,
+        liquidity: curve.liquidity,
         utilization
     }
 }
