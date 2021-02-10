@@ -4,23 +4,28 @@ import { stateTableRow } from "./dfuse";
 import { ExtendedAsset } from "./interfaces";
 
 export interface CurveGrowth {
+    // block information
     block_num_previous: number;
     block_num_current: number;
     block_num_delta: number;
+
+    // contract values
     amplifier: number;
+    reserve0: ExtendedAsset;
+    reserve1: ExtendedAsset;
+    liquidity: ExtendedAsset;
     virtual_price: number;
-    virtual_price_growth: number;
-    apy_average_revenue: number;
+
+    // 24h computed values
     apy_realtime_revenue: number;
     volume: number;
     fees: number;
     trades: number;
-    reserve0: ExtendedAsset;
-    reserve1: ExtendedAsset;
     reserves: number;
     reserves_growth: number;
-    liquidity: ExtendedAsset;
     utilization: number;
+    virtual_price_growth: number;
+    apy_average_revenue: number;
 }
 
 export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<Pairs> {
@@ -64,23 +69,28 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
     const virtual_price_growth = (virtual_price - curve_previous.virtual_price) * 365
 
     return {
+        // block information
         block_num_previous,
         block_num_current,
         block_num_delta,
+
+        // contract values
         amplifier: curve.amplifier,
-        virtual_price,
-        virtual_price_growth,
+        reserve0: curve.reserve0,
+        reserve1: curve.reserve1,
+        liquidity: curve.liquidity,
+
+        // 24h computed values
         apy_average_revenue,
         apy_realtime_revenue,
         volume,
         fees,
         trades,
-        reserve0: curve.reserve0,
-        reserve1: curve.reserve1,
         reserves,
         reserves_growth,
-        liquidity: curve.liquidity,
-        utilization
+        utilization,
+        virtual_price,
+        virtual_price_growth,
     }
 }
 
