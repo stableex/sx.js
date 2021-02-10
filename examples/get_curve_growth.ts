@@ -18,11 +18,11 @@ import { get_curve_growth } from "../src/get_curve_growth";
     //     apy_average_revenue: 0.5303817319211258,
     //     apy_realtime_revenue: 0.45730170740875414,
     //     volume: 161649.52519999997,
-    //     fees: 64.65981007999999,
-    //     trades: 373,
-    //     reserves: 51608.8838,
-    //     reserves_growth: 14222.1282,
+    //     tvl: 51608.8838,
+    //     tvl_growth: 14222.1282,
     //     utilization: 3.132203475402426,
+    //     trades: 373,
+    //     fees: 64.65981007999999,
     //     virtual_price: 1.0131268329543652,
     //     virtual_price_growth: 0.52880546482866
     // }

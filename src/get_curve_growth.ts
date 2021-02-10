@@ -17,15 +17,15 @@ export interface CurveGrowth {
     virtual_price: number;
 
     // 24h computed values
+    apy_average_revenue: number;
     apy_realtime_revenue: number;
     volume: number;
+    tvl: number;
+    tvl_growth: number;
+    utilization: number;
     fees: number;
     trades: number;
-    reserves: number;
-    reserves_growth: number;
-    utilization: number;
     virtual_price_growth: number;
-    apy_average_revenue: number;
 }
 
 export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<Pairs> {
@@ -47,22 +47,22 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
     // utilization calculated by how much traded vs. reserve
     const reserve0 = toNumber(curve.reserve0.quantity);
     const reserve1 = toNumber(curve.reserve1.quantity);
-    const reserves = reserve0 + reserve1;
-    const utilization = volume / reserves;
+    const tvl = reserve0 + reserve1;
+    const utilization = volume / tvl;
 
     // reserve growth
     const previous_reserve0 = toNumber(curve_previous.reserve0.quantity);
     const previous_reserve1 = toNumber(curve_previous.reserve1.quantity);
-    const previous_reserves = previous_reserve0 + previous_reserve1;
-    const reserves_growth = reserves - previous_reserves;
+    const previous_tvl = previous_reserve0 + previous_reserve1;
+    const tvl_growth = tvl - previous_tvl;
 
     // calculate real growth APY
     const trade_fees = volume * trade_fee / 10000;
     const protocol_fees = volume * protocol_fee / 10000;
     const fees = trade_fees + protocol_fees;
-    const average_reserves = (previous_reserves + reserves) / 2;
-    const apy_average_revenue = fees * 365 / average_reserves;
-    const apy_realtime_revenue = fees * 365 / reserves;
+    const average_tvl = (previous_tvl + tvl) / 2;
+    const apy_average_revenue = fees * 365 / average_tvl;
+    const apy_realtime_revenue = fees * 365 / tvl;
 
     // value per share APY
     const virtual_price = curve.virtual_price;
@@ -84,11 +84,11 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, la
         apy_average_revenue,
         apy_realtime_revenue,
         volume,
+        tvl,
+        tvl_growth,
+        utilization,
         fees,
         trades,
-        reserves,
-        reserves_growth,
-        utilization,
         virtual_price,
         virtual_price_growth,
     }
