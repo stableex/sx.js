@@ -47,7 +47,7 @@ export async function get_vault_growth( client: DfuseClient, symcode: string, bl
     const virtual_price_growth = (virtual_price_previous - virtual_price) * 365 / virtual_price
 
     // calculate real growth APY
-    const fees = previous_tvl * virtual_price_growth / 365 // approximate fees based on growth
+    const fees = tvl * virtual_price_growth / 365 // approximate fees based on growth
     const average_tvl = (previous_tvl + tvl) / 2;
     const apy_average_revenue = fees * 365 / average_tvl;
     const apy_realtime_revenue = fees * 365 / tvl;
