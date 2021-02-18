@@ -14,4 +14,6 @@ export * from "./src/get_uppers";
 export * from "./src/get_vault";
 export * from "./src/get_vault_growth";
 export * from "./src/get_volume";
+export * from "./src/get_usdx";
+export * from "./src/get_usdx_growth";
 export * from "./src/interfaces";
