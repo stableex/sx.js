@@ -9,3 +9,13 @@ export async function stateTableRow<T>(client: DfuseClient, code: string, scope:
         throw new Error(`missing ${code}:${scope}:${table}:${primaryKey}`);
     }
 }
+
+export async function stateTable<T>(client: DfuseClient, code: string, scope: string, table: string, block_num: number): Promise<T> {
+    try {
+        const { rows } = await client.stateTable<T>(code, scope, table, {blockNum: block_num, json: true } );
+        if (!rows.length || !rows[0].json) throw new Error("no rows found");
+        return rows[0].json;
+    } catch (e) {
+        throw new Error(`missing ${code}:${scope}:${table}`);
+    }
+}
