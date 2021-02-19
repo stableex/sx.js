@@ -1,7 +1,7 @@
 import { JsonRpc } from 'eosjs';
 import { ExtendedAsset } from './interfaces';
 
-export interface Pairs {
+export interface CurvePairs {
     id: string;
     reserve0: ExtendedAsset;
     reserve1: ExtendedAsset;
@@ -16,7 +16,7 @@ export interface Pairs {
     last_updated: string;
 }
 
-export async function get_curve( rpc: JsonRpc, symcode: string ): Promise<Pairs> {
+export async function get_curve( rpc: JsonRpc, symcode: string ): Promise<CurvePairs> {
     // optional params
     const code = "curve.sx";
     const scope = code;

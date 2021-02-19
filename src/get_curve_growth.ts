@@ -1,19 +1,12 @@
 import { DfuseClient } from "@dfuse/client";
-import { Pairs } from "./get_curve";
+import { CurvePairs } from "./get_curve";
 import { stateTableRow } from "./dfuse";
-import { ExtendedAsset } from "./interfaces";
 
-export interface CurveGrowth {
+export interface CurveGrowth extends CurvePairs {
     // block information
     block_num: number;
     block_num_previous: number;
     block_num_delta: number;
-
-    // contract values
-    amplifier: number;
-    reserve0: ExtendedAsset;
-    reserve1: ExtendedAsset;
-    liquidity: ExtendedAsset;
 
     // 24h computed values
     apy_average_revenue: number;
@@ -28,8 +21,8 @@ export interface CurveGrowth {
     virtual_price_growth: number;
 }
 
-export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<Pairs> {
-    return stateTableRow<Pairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
+export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<CurvePairs> {
+    return stateTableRow<CurvePairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
 export async function get_curve_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<CurveGrowth> {
@@ -74,10 +67,18 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, bl
         block_num_delta,
 
         // contract values
-        amplifier: curve.amplifier,
+        id: curve.id,
         reserve0: curve.reserve0,
         reserve1: curve.reserve1,
         liquidity: curve.liquidity,
+        amplifier: curve.amplifier,
+        virtual_price: curve.virtual_price,
+        price0_last: curve.price0_last,
+        price1_last: curve.price1_last,
+        volume0: curve.volume0,
+        volume1: curve.volume1,
+        trades: curve.trades,
+        last_updated: curve.last_updated,
 
         // 24h computed values
         apy_average_revenue,
@@ -87,8 +88,6 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, bl
         tvl_growth,
         utilization,
         fees,
-        trades,
-        virtual_price,
         virtual_price_growth,
     }
 }
