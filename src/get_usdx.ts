@@ -10,6 +10,7 @@ export interface UsdxLiquidity {
     price0: number;
     price1: number;
     deposit: number;
+    virtual_price: number;
     last_updated: string;
 }
 

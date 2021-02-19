@@ -1,5 +1,5 @@
 import { DfuseClient } from "@dfuse/client";
-import { stateTable, stateTableRow } from "./dfuse";
+import { stateTable } from "./dfuse";
 import { UsdxLiquidity } from "./get_usdx";
 
 export interface UsdxGrowth extends UsdxLiquidity {
@@ -9,14 +9,10 @@ export interface UsdxGrowth extends UsdxLiquidity {
     block_num_delta: number;
 
     // 24h computed values
-    // apy_average_revenue: number;
-    // apy_realtime_revenue: number;
-    // volume: number;
+    apy_average_revenue: number;
+    apy_realtime_revenue: number;
     tvl: number;
     tvl_growth: number;
-    // utilization: number;
-    // fees: number;
-    // trades: number;
     virtual_price: number;
     virtual_price_growth: number;
 }
@@ -30,21 +26,19 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     const usdx = await get_dfuse_usdx( client, block_num );
     const usdx_previous = await get_dfuse_usdx( client, block_num_previous );
 
-    // reserve growth
+    // total value locked growth
     const tvl = usdx.deposit / 10000;
-    const tvl_growth = usdx.deposit / 10000 - usdx_previous.deposit / 10000;
+    const tvl_previous = usdx_previous.deposit / 10000;
+    const tvl_growth = tvl - tvl_previous;
 
-    // // calculate real growth APY
-    // const trade_fees = volume * trade_fee / 10000;
-    // const protocol_fees = volume * protocol_fee / 10000;
-    // const fees = trade_fees + protocol_fees;
-    // const average_tvl = (previous_tvl + tvl) / 2;
-    // const apy_average_revenue = fees * 365 / average_tvl;
-    // const apy_realtime_revenue = fees * 365 / tvl;
+    // calculate real growth APY
+    const average_tvl = (tvl_previous + tvl) / 2;
+    const apy_average_revenue = tvl_growth * 365 / average_tvl;
+    const apy_realtime_revenue = tvl_growth * 365 / tvl;
 
     // value per share APY
-    const virtual_price = usdx.deposit / toNumber(usdx.supply.quantity);
-    const virtual_price_previous = usdx_previous.deposit / toNumber(usdx_previous.supply.quantity) / 10000;
+    const virtual_price = usdx.virtual_price || usdx.deposit / toNumber(usdx.supply.quantity);
+    const virtual_price_previous = usdx_previous.virtual_price || usdx_previous.deposit / toNumber(usdx_previous.supply.quantity) / 10000;
     const virtual_price_growth = (virtual_price - virtual_price_previous) * 365
 
     return {
@@ -65,14 +59,10 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
         last_updated: usdx.last_updated,
 
         // 24h computed values
-        // apy_average_revenue,
-        // apy_realtime_revenue,
-        // volume,
+        apy_average_revenue,
+        apy_realtime_revenue,
         tvl,
         tvl_growth,
-        // utilization,
-        // fees,
-        // trades,
         virtual_price,
         virtual_price_growth,
     }
