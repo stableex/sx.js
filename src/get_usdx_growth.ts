@@ -13,7 +13,7 @@ export interface UsdxGrowth extends UsdxLiquidity {
     apy_realtime_revenue: number;
     tvl: number;
     tvl_growth: number;
-    fees: number;
+    growth: number;
     virtual_price: number;
     virtual_price_growth: number;
 }
@@ -35,13 +35,13 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     // value per share APY
     const virtual_price = usdx.virtual_price || usdx.deposit / toNumber(usdx.supply.quantity);
     const virtual_price_previous = usdx_previous.virtual_price || usdx_previous.deposit / toNumber(usdx_previous.supply.quantity) / 10000;
-    const virtual_price_growth = (virtual_price - virtual_price_previous) * 365
+    const virtual_price_growth = virtual_price - virtual_price_previous; // daily growth
 
     // calculate real growth APY
-    const fees = tvl * virtual_price_growth / 365 // approximate fees based on growth
+    const growth = tvl * virtual_price_growth // approximate fees based on growth
     const average_tvl = (tvl_previous + tvl) / 2;
-    const apy_average_revenue = fees * 365 / average_tvl;
-    const apy_realtime_revenue = fees * 365 / tvl;
+    const apy_average_revenue = growth * 365 / average_tvl;
+    const apy_realtime_revenue = growth * 365 / tvl;
 
     return {
         // block information
@@ -66,7 +66,7 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
         apy_realtime_revenue,
         tvl,
         tvl_growth,
-        fees,
+        growth,
         virtual_price_growth,
     }
 }

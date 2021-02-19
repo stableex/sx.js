@@ -16,6 +16,7 @@ export interface CurveGrowth extends CurvePairs {
     tvl_growth: number;
     utilization: number;
     fees: number;
+    growth: number;
     trades: number;
     virtual_price: number;
     virtual_price_growth: number;
@@ -58,7 +59,8 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, bl
 
     // value per share APY
     const virtual_price = curve.virtual_price;
-    const virtual_price_growth = (virtual_price - curve_previous.virtual_price) * 365 / 2
+    const virtual_price_growth = virtual_price - curve_previous.virtual_price // daily growth
+    const growth = tvl * virtual_price_growth // approximate fees based on growth
 
     return {
         // block information
@@ -88,6 +90,7 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, bl
         tvl_growth,
         utilization,
         fees,
+        growth,
         virtual_price_growth,
     }
 }

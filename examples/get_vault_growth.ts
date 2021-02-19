@@ -6,7 +6,7 @@ import { get_vault_growth } from "../src/get_vault_growth";
 
     // value growth (dfuse required)
     for ( const symcode of ["EOS", "USDT"]) {
-        const growth = await get_vault_growth(client, symcode, last_irreversible_block_num - 100 );
+        const growth = await get_vault_growth(client, symcode, last_irreversible_block_num );
         console.log(growth);
         // {
         //     block_num: 167682667,

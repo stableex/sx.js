@@ -13,7 +13,7 @@ export interface VaultGrowth extends Vault {
     apy_realtime_revenue: number;
     tvl: number;
     tvl_growth: number;
-    fees: number;
+    growth: number;
     virtual_price: number;
     virtual_price_growth: number;
 }
@@ -41,10 +41,10 @@ export async function get_vault_growth( client: DfuseClient, symcode: string, bl
     const virtual_price_growth = (virtual_price_previous - virtual_price) * 365 / virtual_price
 
     // calculate real growth APY
-    const fees = tvl * virtual_price_growth / 365 // approximate fees based on growth
+    const growth = tvl * virtual_price_growth / 365 // approximate fees based on growth
     const tvl_average = (tvl_previous + tvl) / 2;
-    const apy_average_revenue = fees * 365 / tvl_average;
-    const apy_realtime_revenue = fees * 365 / tvl;
+    const apy_average_revenue = growth * 365 / tvl_average;
+    const apy_realtime_revenue = growth * 365 / tvl;
 
     return {
         // block information
@@ -64,7 +64,7 @@ export async function get_vault_growth( client: DfuseClient, symcode: string, bl
         apy_realtime_revenue,
         tvl,
         tvl_growth,
-        fees,
+        growth,
         virtual_price,
         virtual_price_growth,
     }
