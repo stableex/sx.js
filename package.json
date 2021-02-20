@@ -1,6 +1,6 @@
 {
   "name": "sxjs",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "description": "SX - Stable Asset Liquidity Exchange",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

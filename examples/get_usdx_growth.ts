@@ -5,7 +5,7 @@ import { get_usdx_growth } from "../src/get_usdx_growth";
     const { last_irreversible_block_num } = await rpc.get_info();
 
     // value growth (dfuse required)
-    const growth = await get_usdx_growth(client, last_irreversible_block_num );
+    const growth = await get_usdx_growth(client, last_irreversible_block_num, 86400 );
     console.log(growth);
     // {
     //     block_num: 169091486,

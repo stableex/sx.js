@@ -35,7 +35,7 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     // value per share APY
     const virtual_price = usdx.virtual_price || usdx.deposit / toNumber(usdx.supply.quantity);
     const virtual_price_previous = usdx_previous.virtual_price || usdx_previous.deposit / toNumber(usdx_previous.supply.quantity) / 10000;
-    const virtual_price_growth = virtual_price - virtual_price_previous; // daily growth
+    const virtual_price_growth = (virtual_price - virtual_price_previous) / virtual_price
 
     // calculate real growth APY
     const growth = tvl * virtual_price_growth // approximate fees based on growth

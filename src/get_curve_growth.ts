@@ -59,7 +59,7 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, bl
 
     // value per share APY
     const virtual_price = curve.virtual_price;
-    const virtual_price_growth = virtual_price - curve_previous.virtual_price // daily growth
+    const virtual_price_growth = (virtual_price - curve_previous.virtual_price) / virtual_price
     const growth = tvl * virtual_price_growth // approximate fees based on growth
 
     return {
