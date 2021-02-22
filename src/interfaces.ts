@@ -56,6 +56,7 @@ export interface SXUsdxGrowth extends SXUsdxLiquidity {
     growth_claim: number;
     virtual_price: number;
     virtual_price_growth: number;
+    exposure: number;
 }
 
 export interface SXUsdxLiquidity {

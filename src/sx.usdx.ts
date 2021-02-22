@@ -48,6 +48,9 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     const apy_average_revenue = growth_claim * 365 / average_tvl;
     const apy_realtime_revenue = growth_claim * 365 / tvl;
 
+    // additional metrics
+    const exposure = toNumber(usdx.reserve0.quantity) * usdx.price0 / usdx.deposit * 10000;
+
     return {
         // block information
         block_num,
@@ -77,5 +80,6 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
         virtual_price_growth,
         price0_delta: price0_delta,
         price1_delta: price1_delta,
+        exposure
     }
 }
