@@ -1,5 +1,5 @@
 import { rpc, client } from "./config";
-import { get_curve_growth } from "../src/get_curve_growth";
+import { get_curve_growth } from "../src/sx.curve";
 
 (async () => {
     const { last_irreversible_block_num } = await rpc.get_info();

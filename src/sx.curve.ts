@@ -1,35 +1,26 @@
 import { DfuseClient } from "@dfuse/client";
-import { CurvePairs } from "./get_curve";
+import { JsonRpc } from 'eosjs';
 import { stateTableRow } from "./dfuse";
+import { SXCurvePairs, SXCurveGrowth } from "./interfaces";
+import { toNumber } from "./utils";
 
-export interface CurveGrowth extends CurvePairs {
-    // block information
-    block_num: number;
-    block_num_previous: number;
-    block_num_delta: number;
+export async function get_curve( rpc: JsonRpc, symcode: string ): Promise<SXCurvePairs> {
+    const code = "curve.sx";
+    const scope = code;
+    const table = "pairs";
+    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_limit: symcode, upper_limit: symcode });
 
-    // 24h computed values
-    apy_average_revenue: number;
-    apy_realtime_revenue: number;
-    volume: number;
-    tvl: number;
-    tvl_growth: number;
-    utilization: number;
-    fees: number;
-    growth: number;
-    trades: number;
-    virtual_price: number;
-    virtual_price_growth: number;
+    return results.rows[0];
 }
 
-export async function get_dfuse_curve( client: DfuseClient, symcode: string, block_num: number ): Promise<CurvePairs> {
-    return stateTableRow<CurvePairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
+export async function get_curve_dfuse( client: DfuseClient, symcode: string, block_num: number ): Promise<SXCurvePairs> {
+    return stateTableRow<SXCurvePairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
 }
 
-export async function get_curve_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<CurveGrowth> {
+export async function get_curve_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<SXCurveGrowth> {
     const block_num_previous = block_num - block_num_delta;
-    const curve = await get_dfuse_curve( client, symcode, block_num );
-    const curve_previous = await get_dfuse_curve( client, symcode, block_num_previous );
+    const curve = await get_curve_dfuse( client, symcode, block_num );
+    const curve_previous = await get_curve_dfuse( client, symcode, block_num_previous );
 
     // trade volume stats
     const volume0 = toNumber(curve.volume0) - toNumber(curve_previous.volume0)
@@ -93,8 +84,4 @@ export async function get_curve_growth( client: DfuseClient, symcode: string, bl
         growth,
         virtual_price_growth,
     }
-}
-
-function toNumber( quantity: string ) {
-    return Number(quantity.split(" ")[0] || 0);
 }

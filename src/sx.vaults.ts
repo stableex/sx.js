@@ -1,32 +1,27 @@
+import { JsonRpc } from 'eosjs';
 import { DfuseClient } from "@dfuse/client";
-import { Vault } from "./get_vault";
 import { stateTableRow } from "./dfuse";
+import { SXVault, SXVaultGrowth } from './interfaces';
+import { toNumber } from "./utils";
 
-export interface VaultGrowth extends Vault {
-    // block information
-    block_num: number;
-    block_num_previous: number;
-    block_num_delta: number;
+export async function get_vault( rpc: JsonRpc, symcode: string ): Promise<SXVault> {
+    const code = "vaults.sx";
+    const scope = code;
+    const table = "vault";
+    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_bound: symcode, upper_bound: symcode });
 
-    // 24h computed values
-    apy_average_revenue: number;
-    apy_realtime_revenue: number;
-    tvl: number;
-    tvl_growth: number;
-    growth: number;
-    virtual_price: number;
-    virtual_price_growth: number;
+    return results.rows[0];
 }
 
-export async function get_dfuse_vault( client: DfuseClient, symcode: string, block_num: number ) {
-    return stateTableRow<Vault>( client, "vaults.sx", "vaults.sx", "vault", symcode, block_num );
+export async function get_vault_dfuse( client: DfuseClient, symcode: string, block_num: number ) {
+    return stateTableRow<SXVault>( client, "vaults.sx", "vaults.sx", "vault", symcode, block_num );
 }
 
-export async function get_vault_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800 ): Promise<VaultGrowth> {
+export async function get_vault_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800 ): Promise<SXVaultGrowth> {
     const block_num_previous = block_num - block_num_delta;
 
-    const vault = await get_dfuse_vault( client, symcode, block_num );
-    const previous_vault = await get_dfuse_vault( client, symcode, block_num_previous );
+    const vault = await get_vault_dfuse( client, symcode, block_num );
+    const previous_vault = await get_vault_dfuse( client, symcode, block_num_previous );
 
     // contract values
     const tvl = toNumber(vault.deposit.quantity);
@@ -68,8 +63,4 @@ export async function get_vault_growth( client: DfuseClient, symcode: string, bl
         virtual_price,
         virtual_price_growth,
     }
-}
-
-function toNumber( quantity: string ) {
-    return Number(quantity.split(" ")[0] || 0);
 }

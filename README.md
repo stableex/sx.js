@@ -4,7 +4,7 @@
 [![npm version](https://badge.fury.io/js/sxjs.svg)](https://badge.fury.io/js/sxjs)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/stableex/sx.js/master/LICENSE)
 
-> SX Liquidity Exchange - Javascript Library
+> SX - Javascript Library
 
 ## Install
 
@@ -22,36 +22,33 @@ $ npm install --save sxjs
 
 ## Quick Start
 
-```ts
+```js
 const { JsonRpc } = require('eosjs');
-const { get_tokens, get_settings, get_rate } = require("sxjs");
+const { get_curve } = require("sxjs");
 
-(async () => {
-    // nodeos
-    const rpc = new JsonRpc("https://eos.eosn.io", { fetch: require('node-fetch') });
+// nodeos
+const rpc = new JsonRpc("https://eos.eosn.io", { fetch: require('node-fetch') });
 
-    // settings (HTTP request)
-    const code = "swap.sx";
-    const tokens = await get_tokens( rpc, code );
-    const settings = await get_settings( rpc, code );
+// HTTP request
+( async () => {
+    const curve = await get_curve(rpc, "SXA" );
+    console.log(curve);
+    // {
+    //     id: 'SXA',
+    //     reserve0: { quantity: '126.6560 USDT', contract: 'tethertether' },
+    //     reserve1: { quantity: '73.7892 USN', contract: 'danchortoken' },
+    //     liquidity: { quantity: '200.00000000 SXA', contract: 'curve.sx' },
+    //     amplifier: 100,
+    //     virtual_price: '1.00222600000000006',
+    //     price0_last: '0.99431936528374776',
+    //     price1_last: '1.00571308868618003',
+    //     volume0: '471.0841 USDT',
+    //     volume1: '441.9871 USN',
+    //     last_updated: '2021-01-27T16:11:37'
+    // }
 
-    // calculate rate
-    const quantity = "1.0000 EOS";
-    const symcode = "USDT";
-    const rate = get_rate( quantity, symcode, tokens, settings );
-    console.log(rate.to_string());
-    // => 2.7726 USDT
+    // value per share
+    console.log(curve.virtual_price);
+    //=> 1.00222600000000006
 })();
 ```
-
-## Examples
-
-- [`get_fee`](/examples/get_fee.ts)
-- [`get_price`](/examples/get_price.ts)
-- [`get_rate`](/examples/get_rate.ts)
-- [`get_settings`](/examples/get_settings.ts)
-- [`get_slippage`](/examples/get_slippage.ts)
-- [`get_spot_price`](/examples/get_spot_price.ts)
-- [`get_tokens`](/examples/get_tokens.ts)
-- [`get_uppers`](/examples/get_uppers.ts)
-- [`get_volume`](/examples/get_volume.ts)

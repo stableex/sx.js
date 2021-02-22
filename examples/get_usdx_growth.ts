@@ -1,5 +1,5 @@
 import { rpc, client } from "./config";
-import { get_usdx_growth } from "../src/get_usdx_growth";
+import { get_usdx_growth } from "../src/sx.usdx";
 
 (async () => {
     const { last_irreversible_block_num } = await rpc.get_info();

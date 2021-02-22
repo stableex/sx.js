@@ -1,6 +1,6 @@
 {
   "name": "sxjs",
-  "version": "2.9.4",
+  "version": "3.0.0",
   "description": "SX - Stable Asset Liquidity Exchange",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,18 +20,16 @@
   "license": "MIT",
   "homepage": "https://github.com/stableex/sx.js",
   "devDependencies": {
-    "@dfuse/client": "^0.3.17",
-    "@types/dotenv": "^8.2.0",
+    "@dfuse/client": "*",
+    "@types/dotenv": "*",
     "@types/jest": "*",
-    "dotenv": "^8.2.0",
-    "eosjs": "^21.0.1-rc2",
+    "dotenv": "*",
+    "eosjs": "*",
     "jest": "*",
     "node-fetch": "*",
     "ts-jest": "*",
     "typescript": "*",
-    "ws": "^7.4.1"
+    "ws": "*"
   },
-  "dependencies": {
-    "eos-common": "^0.8.0"
-  }
+  "dependencies": {}
 }

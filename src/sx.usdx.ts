@@ -1,31 +1,26 @@
 import { DfuseClient } from "@dfuse/client";
+import { JsonRpc } from 'eosjs';
 import { stateTable } from "./dfuse";
-import { UsdxLiquidity } from "./get_usdx";
+import { SXUsdxLiquidity, SXUsdxGrowth } from "./interfaces";
+import { toNumber } from "./utils";
 
-export interface UsdxGrowth extends UsdxLiquidity {
-    // block information
-    block_num: number;
-    block_num_previous: number;
-    block_num_delta: number;
+export async function get_usdx( rpc: JsonRpc ): Promise<SXUsdxLiquidity> {
+    const code = "usdx.sx";
+    const scope = code;
+    const table = "liquidity";
+    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1 });
 
-    // 24h computed values
-    apy_average_revenue: number;
-    apy_realtime_revenue: number;
-    tvl: number;
-    tvl_growth: number;
-    growth: number;
-    virtual_price: number;
-    virtual_price_growth: number;
+    return results.rows[0];
 }
 
-export async function get_dfuse_usdx( client: DfuseClient, block_num: number ): Promise<UsdxLiquidity> {
-    return stateTable<UsdxLiquidity>( client, "usdx.sx", "usdx.sx", "liquidity", block_num );
+export async function get_usdx_dfuse( client: DfuseClient, block_num: number ): Promise<SXUsdxLiquidity> {
+    return stateTable<SXUsdxLiquidity>( client, "usdx.sx", "usdx.sx", "liquidity", block_num );
 }
 
-export async function get_usdx_growth( client: DfuseClient, block_num: number, block_num_delta = 172800 ): Promise<UsdxGrowth> {
+export async function get_usdx_growth( client: DfuseClient, block_num: number, block_num_delta = 172800 ): Promise<SXUsdxGrowth> {
     const block_num_previous = block_num - block_num_delta;
-    const usdx = await get_dfuse_usdx( client, block_num );
-    const usdx_previous = await get_dfuse_usdx( client, block_num_previous );
+    const usdx = await get_usdx_dfuse( client, block_num );
+    const usdx_previous = await get_usdx_dfuse( client, block_num_previous );
 
     // total value locked growth
     const tvl = usdx.deposit / 10000;
@@ -69,8 +64,4 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
         growth,
         virtual_price_growth,
     }
-}
-
-function toNumber( quantity: string ) {
-    return Number(quantity.split(" ")[0] || 0);
 }

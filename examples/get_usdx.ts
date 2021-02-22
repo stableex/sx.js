@@ -1,5 +1,5 @@
 import { rpc } from "./config";
-import { get_usdx } from "../src/get_usdx";
+import { get_usdx } from "../src/sx.usdx";
 
 (async () => {
     // SX curve

@@ -1,5 +1,5 @@
 import { rpc, client } from "./config";
-import { get_vault_growth } from "../src/get_vault_growth";
+import { get_vault_growth } from "../src/sx.vaults";
 
 (async () => {
     const { last_irreversible_block_num } = await rpc.get_info();
