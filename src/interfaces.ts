@@ -49,7 +49,11 @@ export interface SXUsdxGrowth extends SXUsdxLiquidity {
     apy_realtime_revenue: number;
     tvl: number;
     tvl_growth: number;
+    price0_delta: number;
+    price1_delta: number;
     growth: number;
+    growth_price: number;
+    growth_claim: number;
     virtual_price: number;
     virtual_price_growth: number;
 }
@@ -86,7 +90,7 @@ export interface SXVaultGrowth extends SXVault {
     apy_realtime_revenue: number;
     tvl: number;
     tvl_growth: number;
-    growth: number;
+    growth: number
     virtual_price: number;
     virtual_price_growth: number;
 }
