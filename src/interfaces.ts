@@ -67,7 +67,10 @@ export interface SXUsdxLiquidity {
     supply: ExtendedAsset;
     price0: number;
     price1: number;
-    deposit: number;
+    deposit?: number;
+    liquid?: number;
+    staked?: number;
+    total?: number;
     virtual_price: number;
     last_updated: string;
 }

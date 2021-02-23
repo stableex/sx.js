@@ -17,19 +17,25 @@ export async function get_usdx_dfuse( client: DfuseClient, block_num: number ): 
     return stateTable<SXUsdxLiquidity>( client, "usdx.sx", "usdx.sx", "liquidity", block_num );
 }
 
+// TEMP
+function get_total(usdx: {total?: number, deposit?: number} ): number
+{
+    return usdx.total || usdx.deposit || 0;
+}
+
 export async function get_usdx_growth( client: DfuseClient, block_num: number, block_num_delta = 172800 ): Promise<SXUsdxGrowth> {
     const block_num_previous = block_num - block_num_delta;
     const usdx = await get_usdx_dfuse( client, block_num );
     const usdx_previous = await get_usdx_dfuse( client, block_num_previous );
 
     // total value locked growth
-    const tvl = usdx.deposit / 10000;
-    const tvl_previous = usdx_previous.deposit / 10000;
+    const tvl = get_total(usdx) / 10000;
+    const tvl_previous = (usdx_previous.deposit || usdx_previous.total || 0 ) / 10000;
     const tvl_growth = tvl - tvl_previous;
 
     // value per share APY
-    const virtual_price = usdx.virtual_price || usdx.deposit / toNumber(usdx.supply.quantity);
-    const virtual_price_previous = usdx_previous.virtual_price || usdx_previous.deposit / toNumber(usdx_previous.supply.quantity) / 10000;
+    const virtual_price = usdx.virtual_price || get_total(usdx) / toNumber(usdx.supply.quantity);
+    const virtual_price_previous = usdx_previous.virtual_price || get_total(usdx_previous) / toNumber(usdx_previous.supply.quantity) / 10000;
     const virtual_price_growth = (virtual_price - virtual_price_previous) / virtual_price
 
     // price delta changes
@@ -49,7 +55,7 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     const apy_realtime_revenue = growth_claim * 365 / tvl;
 
     // additional metrics
-    const exposure = toNumber(usdx.reserve0.quantity) * usdx.price0 / usdx.deposit * 10000;
+    const exposure = toNumber(usdx.reserve0.quantity) * usdx.price0 / get_total(usdx) * 10000;
 
     return {
         // block information
@@ -65,7 +71,9 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
         supply: usdx.supply,
         price0: usdx.price0,
         price1: usdx.price1,
-        deposit: usdx.deposit,
+        liquid: usdx.liquid,
+        staked: usdx.staked,
+        total: get_total(usdx),
         last_updated: usdx.last_updated,
         virtual_price: usdx.virtual_price,
 
