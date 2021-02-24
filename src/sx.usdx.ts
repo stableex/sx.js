@@ -32,6 +32,7 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     const tvl = get_total(usdx) / 10000;
     const tvl_previous = (usdx_previous.deposit || usdx_previous.total || 0 ) / 10000;
     const tvl_growth = tvl - tvl_previous;
+    const staked = (usdx.staked || 0) / 10000;
 
     // value per share APY
     const virtual_price = usdx.virtual_price || get_total(usdx) / toNumber(usdx.supply.quantity);
@@ -46,7 +47,7 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
     const growth_price0 = price0_delta * toNumber(usdx.reserve0.quantity) * usdx.price0;
     const growth_price1 = price1_delta * toNumber(usdx.reserve1.quantity) * usdx.price1;
     const growth_price = growth_price0 + growth_price1;
-    const growth_claim = tvl * virtual_price_growth - growth_price // approximate growth based on virtual growth minus price delta
+    const growth_claim = staked * virtual_price_growth - growth_price // approximate growth based on virtual growth minus price delta
     const growth = growth_price + growth_claim;
 
     // calculate APY
@@ -86,8 +87,8 @@ export async function get_usdx_growth( client: DfuseClient, block_num: number, b
         growth_price,
         growth,
         virtual_price_growth,
-        price0_delta: price0_delta,
-        price1_delta: price1_delta,
+        price0_delta,
+        price1_delta,
         exposure
     }
 }
