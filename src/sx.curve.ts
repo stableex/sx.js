@@ -1,7 +1,7 @@
 import { DfuseClient } from "@dfuse/client";
 import { JsonRpc } from 'eosjs';
 import { stateTableRow } from "./dfuse";
-import { SXCurvePairs, SXCurveGrowth } from "./interfaces";
+import { SXCurvePairs, SXCurveGrowth, SXCurveConfig } from "./interfaces";
 import { toNumber } from "./utils";
 
 export async function get_curve( rpc: JsonRpc, symcode: string ): Promise<SXCurvePairs> {
@@ -15,6 +15,15 @@ export async function get_curve( rpc: JsonRpc, symcode: string ): Promise<SXCurv
 
 export async function get_curve_dfuse( client: DfuseClient, symcode: string, block_num: number ): Promise<SXCurvePairs> {
     return stateTableRow<SXCurvePairs>( client, "curve.sx", "curve.sx", "pairs", symcode, block_num );
+}
+
+export async function get_curve_config( rpc: JsonRpc ): Promise<SXCurveConfig> {
+    const code = "curve.sx";
+    const scope = code;
+    const table = "config";
+    const results = await rpc.get_table_rows({ json: true, code, scope, table});
+
+    return results.rows[0];
 }
 
 export async function get_curve_growth( client: DfuseClient, symcode: string, block_num: number, block_num_delta = 172800, trade_fee = 4, protocol_fee = 0 ): Promise<SXCurveGrowth> {

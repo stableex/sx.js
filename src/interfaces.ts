@@ -38,6 +38,13 @@ export interface SXCurvePairs {
     last_updated: string;
 }
 
+export interface SXCurveConfig {
+    status: string;
+    trade_fee: number;
+    protocol_fee: number;
+    fee_account: string;
+}
+
 export interface SXUsdxGrowth extends SXUsdxLiquidity {
     // block information
     block_num: number;
