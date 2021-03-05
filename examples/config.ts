@@ -11,4 +11,4 @@ export const rpc = new JsonRpc(endpoint, { fetch: require("node-fetch") })
 // dfuse
 if (!process.env.DFUSE_TOKEN) throw new Error("[DFUSE_TOKEN] is required");
 export const apiKey = process.env.DFUSE_TOKEN || '';
-export const client = createDfuseClient({ apiKey, network: 'eos.dfuse.eosnation.io' })
+export const client = createDfuseClient({ apiKey, network: 'eos.dfuse.eosnation.io' });
