@@ -94,6 +94,22 @@ export interface SXVault {
     last_updated: string;
 }
 
+export interface SXVaultGrowth extends SXVault {
+    // block information
+    block_num: number;
+    block_num_previous: number;
+    block_num_delta: number;
+
+    // 24h computed values
+    apy_average_revenue: number;
+    apy_realtime_revenue: number;
+    tvl: number;
+    tvl_growth: number;
+    growth: number
+    virtual_price: number;
+    virtual_price_growth: number;
+}
+
 export interface SXFlash {
     contract: string;
     last_modified: string;
