@@ -1,3 +1,7 @@
+export interface KeyValue {
+    key: string;
+    value: string;
+}
 export interface ExtendedAsset {
     quantity: string;
     contract: string;
@@ -90,18 +94,25 @@ export interface SXVault {
     last_updated: string;
 }
 
-export interface SXVaultGrowth extends SXVault {
+export interface SXFlash {
+    contract: string;
+    last_modified: string;
+    transactions: number;
+    borrow: KeyValue[];
+    fees: KeyValue[];
+    reserves: KeyValue[];
+}
+
+
+export interface SXFlashGrowth extends SXFlash {
     // block information
     block_num: number;
     block_num_previous: number;
     block_num_delta: number;
 
     // 24h computed values
-    apy_average_revenue: number;
-    apy_realtime_revenue: number;
-    tvl: number;
-    tvl_growth: number;
-    growth: number
-    virtual_price: number;
-    virtual_price_growth: number;
+    borrow_delta: number;
+    fees_delta: number;
+    reserves_delta: number;
+    transactions_delta: number;
 }
