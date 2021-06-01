@@ -1,7 +1,7 @@
 {
   "name": "sxjs",
-  "version": "3.1.0",
-  "description": "SX - Stable Asset Liquidity Exchange",
+  "version": "3.2.0",
+  "description": "SX aims to build secure & reliable financial blockchain protocols for EOSIO blockchains.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

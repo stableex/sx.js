@@ -1,4 +1,7 @@
 export * from "./src/dfuse";
+export * from "./src/curve";
+export * from "./src/curve-bigInt";
+export * from "./src/sx.curve";
 export * from "./src/sx.curve";
 export * from "./src/sx.vaults";
 export * from "./src/sx.usdx";

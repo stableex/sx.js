@@ -1,6 +1,6 @@
 import bigInt, { BigInteger } from "big-integer";
 
-export class Curve {
+export class CurveBigInt {
     /**
      * ## STATIC `get_amount_out`
      *
@@ -31,7 +31,7 @@ export class Curve {
      * // => 100110
      * ```
      */
-    static get_amount_out( amount_in: BigInteger, reserve_in: BigInteger, reserve_out: BigInteger, amplifier: BigInteger, fee = bigInt(4) ): BigInteger
+    static get_amount_out( amount_in: BigInteger, reserve_in: BigInteger, reserve_out: BigInteger, amplifier: BigInteger, fee = bigInt(4) )
     {
         if ( !(amount_in.greater(0) )) throw new Error("sx.curve: INSUFFICIENT_INPUT_AMOUNT");
         if ( !(amplifier.greater(0) )) throw new Error("sx.curve: WRONG_AMPLIFIER");
@@ -52,7 +52,7 @@ export class Curve {
         // x^2 + x * (sum' - (An^n - 1) * D / (An^n)) = D ^ (n + 1) / (n^(2n) * prod' * A), where n==2
         // x^2 + b*x = c
         const b: number = Number(reserve_in.add(amount_in)) + Number(D.divide(amplifier.times(2))) - Number(D);
-        const c: BigInteger = D.times(D.divide((reserve_in.add(amount_in)).times(2)).times(D).divide(amplifier.times(4)));
+        const c: BigInteger = D.times(D).divide((reserve_in.add(amount_in)).times(2)).times(D).divide(amplifier.times(4));
         let x: BigInteger = D, x_prev = bigInt(0);
         while (x.notEquals(x_prev)) {
             x_prev = x;
