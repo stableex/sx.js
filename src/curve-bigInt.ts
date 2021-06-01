@@ -62,6 +62,6 @@ export class CurveBigInt {
         if (!(reserve_out > x)) throw new Error("sx.curve: INSUFFICIENT_RESERVE_OUT");
         const amount_out: BigInteger = reserve_out.minus(x);
 
-        return amount_out.minus(fee.times(amount_out.divide(10000)));
+        return amount_out.minus(fee.times(amount_out).divide(10000));
     }
 }
