@@ -8,7 +8,7 @@ export async function get_curve( rpc: JsonRpc, symcode: string ): Promise<SXCurv
     const code = "curve.sx";
     const scope = code;
     const table = "pairs";
-    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_limit: symcode, upper_limit: symcode });
+    const results = await rpc.get_table_rows({ json: true, code, scope, table, limit: 1, lower_bound: symcode, upper_bound: symcode });
 
     return results.rows[0];
 }
