@@ -1,6 +1,6 @@
 {
   "name": "sxjs",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "SX aims to build secure & reliable financial blockchain protocols for EOSIO blockchains.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
